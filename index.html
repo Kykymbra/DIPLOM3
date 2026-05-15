@@ -63,8 +63,10 @@
             background-color: var(--bg-color);
             overflow-x: hidden;
             transition: background-color 0.3s ease, color 0.3s ease;
+            padding-top: 0;
         }
         
+        /* Стили для полей ввода */
         input, textarea, select {
             background-color: var(--input-bg) !important;
             color: var(--input-text) !important;
@@ -133,6 +135,7 @@
         .btn-warning { background: linear-gradient(135deg, var(--warning-color), #e0a800); color: #212529; }
         .btn-small { padding: 8px 16px; font-size: 0.9rem; }
         
+        /* Стили для загрузки фото */
         .image-upload-area {
             border: 2px dashed var(--gray-color);
             border-radius: var(--border-radius);
@@ -189,6 +192,7 @@
             margin-top: 15px;
         }
         
+        /* ========== ИСПРАВЛЕННЫЙ HEADER ========== */
         header {
             padding: 1rem 0;
             position: fixed;
@@ -229,19 +233,18 @@
         .logo-icon { 
             width: 45px; 
             height: 45px; 
+            background: transparent;
             border-radius: 10px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             overflow: hidden;
         }
-        
         .logo-icon img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
-        
         .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
         .logo-text small { font-size: 0.65rem; font-weight: normal; color: var(--gray-color); }
         
@@ -350,6 +353,7 @@
             cursor: pointer;
         }
         
+        /* ========== ОТСТУП ДЛЯ КОНТЕНТА ========== */
         .page.active {
             display: block;
             padding-top: 85px;
@@ -804,28 +808,7 @@
             margin-bottom: 2rem;
         }
         
-        .footer-logo { 
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-        
-        .footer-logo .logo-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        .footer-logo .logo-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
+        .footer-logo { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
         .footer-about p { color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
         .footer-links h4, .footer-contact h4 { font-size: 1.1rem; margin-bottom: 1rem; color: white; }
         .footer-links ul li { margin-bottom: 0.5rem; }
@@ -861,6 +844,7 @@
             font-size: 0.8rem;
         }
         
+        /* Modal - исправлено: закрытие только по крестику или клику вне */
         .modal {
             display: none;
             position: fixed;
@@ -913,6 +897,7 @@
         
         .modal-body { padding: 1.2rem; }
         
+        /* Кнопка отмены в модальном окне */
         .modal-cancel-btn {
             background: var(--gray-color);
             margin-right: 10px;
@@ -997,7 +982,7 @@
             .logo-text { display: none; }
             .page.active { padding-top: 70px; }
             .notification {
-                bottom: 20px;
+                bottom: 30px;
             }
         }
     </style>
@@ -1184,15 +1169,7 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">
-                        <div class="logo-icon">
-                            <img src="https://almenevskij-r45.gosweb.gosuslugi.ru/netcat_files/generated/91/123/760x570/551/8ef1b78ef551488a260b0753c523292c.jpg?crop=0%3A0%3A0%3A0&hash=b08f422ab001943aba0b8c2747b99e71&resize_mode=0&wm_m=0" alt="Логотип">
-                        </div>
-                        <div>SportEventHub</div>
-                    </div>
-                    <p>Развитие физической культуры и массового спорта.</p>
-                </div>
+                <div class="footer-about"><div class="footer-logo"><div class="logo-icon"><i class="fas fa-futbol"></i></div><div>SportEventHub</div></div><p>Развитие физической культуры и массового спорта.</p></div>
                 <div class="footer-links"><h4>Меню</h4><ul><li><a data-section="home">Главная</a></li><li><a data-section="about">О нас</a></li><li><a data-section="services">Услуги</a></li><li><a data-section="portfolio">Мероприятия</a></li><li><a data-page="dashboard">Личный кабинет</a></li></ul></div>
                 <div class="footer-contact"><h4>Контакты</h4><p><i class="fas fa-map-marker-alt"></i> г. Краснодар, ул. Красная, 123</p><p><i class="fas fa-phone"></i> +7 (861) 123-45-67</p><p><i class="fas fa-envelope"></i> sport@center-fmsr.ru</p></div>
             </div>
@@ -1241,6 +1218,7 @@
                     <div class="form-group"><label>Краткое описание *</label><textarea id="eventDescription" class="form-control" rows="3" required></textarea></div>
                     <div class="form-group"><label>Полное описание</label><textarea id="eventFullDesc" class="form-control" rows="4"></textarea></div>
                     
+                    <!-- Загрузка фото с компьютера -->
                     <div class="form-group">
                         <label>Фото мероприятия</label>
                         <div class="image-upload-area" id="imageUploadArea">
@@ -1255,6 +1233,8 @@
                                 <button type="button" class="remove-image-btn" id="removeImageBtn">×</button>
                             </div>
                         </div>
+                        <input type="hidden" id="eventImageUrl" value="">
+                        <input type="hidden" id="eventImageStoragePath" value="">
                     </div>
                     
                     <div class="form-group"><label>Дата проведения</label><input type="text" id="eventDate" class="form-control" placeholder="15.05.2024"></div>
@@ -1345,16 +1325,11 @@
         let contacts = [];
         let usersList = [];
         let currentFilter = 'all';
+        
+        // Переменные для загрузки фото
         let selectedImageFile = null;
-
-        function showNotification(msg, type = 'info') {
-            const n = document.getElementById('notification');
-            n.textContent = msg;
-            n.className = `notification ${type}`;
-            n.style.display = 'block';
-            setTimeout(() => n.style.display = 'none', 3000);
-        }
-
+        
+        // ========== ФУНКЦИИ ДЛЯ МОДАЛЬНЫХ ОКОН ==========
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) modal.classList.remove('active');
@@ -1367,6 +1342,14 @@
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
+        }
+        
+        function showNotification(msg, type = 'info') {
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.className = `notification ${type}`;
+            n.style.display = 'block';
+            setTimeout(() => n.style.display = 'none', 3000);
         }
 
         function escapeHtml(str) {
@@ -1389,8 +1372,6 @@
             return texts[cat] || 'Мероприятие';
         }
 
-        // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
-        
         async function loadEvents() {
             try {
                 const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
@@ -1400,13 +1381,11 @@
                     events.push({ id: doc.id, ...doc.data() });
                 });
                 renderHomeEvents();
-                const statEvents = document.getElementById('statEvents');
-                if (statEvents) statEvents.textContent = events.length + '+';
+                document.getElementById('statEvents').textContent = events.length + '+';
                 if (document.getElementById('dashboardPage').classList.contains('active') && currentUser) renderDashboard();
                 if (currentUserRole === 'admin') renderAdminPanel();
             } catch (error) {
                 console.error("Ошибка загрузки мероприятий:", error);
-                showNotification('Ошибка загрузки данных', 'error');
             }
         }
 
@@ -1450,232 +1429,14 @@
             }
         }
 
-        // ========== ДОБАВЛЕНИЕ МЕРОПРИЯТИЙ (ИСПРАВЛЕНО) ==========
-        
-        async function addEventToFirebase(eventData, imageFile) {
-            try {
-                let imageUrl = '';
-                let imageStoragePath = '';
-                
-                if (imageFile) {
-                    const timestamp = Date.now();
-                    const fileName = `${timestamp}_${imageFile.name}`;
-                    const storageRef = ref(storage, `events/${timestamp}/${fileName}`);
-                    await uploadBytes(storageRef, imageFile);
-                    imageUrl = await getDownloadURL(storageRef);
-                    imageStoragePath = storageRef.fullPath;
-                }
-                
-                const docRef = await addDoc(collection(db, "events"), {
-                    ...eventData,
-                    imageUrl: imageUrl,
-                    imageStoragePath: imageStoragePath,
-                    registeredCount: 0,
-                    createdAt: serverTimestamp()
-                });
-                console.log("Мероприятие добавлено с ID:", docRef.id);
-                showNotification('Мероприятие успешно добавлено!', 'success');
-                await loadEvents();
-                return true;
-            } catch (error) {
-                console.error("Ошибка при добавлении:", error);
-                showNotification('Ошибка при добавлении мероприятия: ' + error.message, 'error');
-                return false;
-            }
-        }
-
-        async function updateEventInFirebase(eventId, eventData, imageFile, oldImagePath) {
-            try {
-                let imageUrl = eventData.imageUrl || '';
-                let imageStoragePath = eventData.imageStoragePath || '';
-                
-                if (imageFile) {
-                    if (oldImagePath) {
-                        try {
-                            const oldImageRef = ref(storage, oldImagePath);
-                            await deleteObject(oldImageRef);
-                        } catch(e) { console.log("Старое фото не найдено"); }
-                    }
-                    const timestamp = Date.now();
-                    const fileName = `${timestamp}_${imageFile.name}`;
-                    const storageRef = ref(storage, `events/${eventId}/${fileName}`);
-                    await uploadBytes(storageRef, imageFile);
-                    imageUrl = await getDownloadURL(storageRef);
-                    imageStoragePath = storageRef.fullPath;
-                }
-                
-                await updateDoc(doc(db, "events", eventId), {
-                    ...eventData,
-                    imageUrl: imageUrl,
-                    imageStoragePath: imageStoragePath
-                });
-                showNotification('Мероприятие обновлено!', 'success');
-                await loadEvents();
-                return true;
-            } catch (error) {
-                console.error("Ошибка при обновлении:", error);
-                showNotification('Ошибка при обновлении', 'error');
-                return false;
-            }
-        }
-
-        async function deleteEventFromFirebase(eventId) {
-            if (!confirm('Удалить мероприятие?')) return false;
-            try {
-                const event = events.find(e => e.id === eventId);
-                if (event?.imageStoragePath) {
-                    try {
-                        const imageRef = ref(storage, event.imageStoragePath);
-                        await deleteObject(imageRef);
-                    } catch(e) {}
-                }
-                await deleteDoc(doc(db, "events", eventId));
-                showNotification('Мероприятие удалено', 'success');
-                await loadEvents();
-                await loadRegistrations();
-                return true;
-            } catch (error) {
-                console.error("Ошибка при удалении:", error);
-                showNotification('Ошибка при удалении', 'error');
-                return false;
-            }
-        }
-
-        async function submitRegistration(eventId, formData) {
-            try {
-                const event = events.find(e => e.id === eventId);
-                if (!event) return false;
-                
-                const existing = registrations.find(r => r.eventId === eventId && r.email === formData.email);
-                if (existing) {
-                    showNotification('Вы уже зарегистрированы!', 'error');
-                    return false;
-                }
-                
-                if ((event.registeredCount || 0) >= (event.maxParticipants || 100)) {
-                    showNotification('Все места заняты!', 'error');
-                    return false;
-                }
-                
-                await addDoc(collection(db, "registrations"), {
-                    eventId: eventId,
-                    eventTitle: event.title,
-                    fullName: formData.fullName,
-                    email: formData.email,
-                    phone: formData.phone,
-                    birthDate: formData.birthDate,
-                    rank: formData.rank,
-                    comment: formData.comment,
-                    userId: currentUser?.uid,
-                    status: 'pending',
-                    createdAt: serverTimestamp()
-                });
-                
-                await updateDoc(doc(db, "events", eventId), {
-                    registeredCount: (event.registeredCount || 0) + 1
-                });
-                
-                showNotification(`Заявка на "${event.title}" отправлена!`, 'success');
-                await loadEvents();
-                await loadRegistrations();
-                return true;
-            } catch (error) {
-                console.error("Ошибка:", error);
-                showNotification('Ошибка при отправке заявки', 'error');
-                return false;
-            }
-        }
-
-        async function updateRegistrationStatus(regId, status) {
-            try {
-                await updateDoc(doc(db, "registrations", regId), { status });
-                showNotification('Статус обновлен', 'success');
-                await loadRegistrations();
-                await loadEvents();
-            } catch (error) { console.error("Ошибка:", error); }
-        }
-
-        async function updateContactStatus(contactId, status) {
-            try {
-                await updateDoc(doc(db, "contacts", contactId), { status });
-                await loadContacts();
-            } catch (error) { console.error("Ошибка:", error); }
-        }
-
-        async function updateUserRole(userId, role) {
-            try {
-                await updateDoc(doc(db, "users", userId), { role });
-                showNotification('Роль обновлена', 'success');
-                await loadUsers();
-            } catch (error) { console.error("Ошибка:", error); }
-        }
-
-        async function addContact(data) {
-            try {
-                await addDoc(collection(db, "contacts"), { 
-                    ...data, 
-                    status: 'new', 
-                    createdAt: serverTimestamp() 
-                });
-                showNotification('Заявка отправлена!', 'success');
-                await loadContacts();
-            } catch (error) { 
-                console.error("Ошибка:", error);
-                showNotification('Ошибка при отправке', 'error');
-            }
-        }
-
-        async function login(email, password) {
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                showNotification('Добро пожаловать!', 'success');
-                return true;
-            } catch (error) {
-                showNotification('Неверный email или пароль', 'error');
-                return false;
-            }
-        }
-
-        async function register(name, email, password, phone) {
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await setDoc(doc(db, "users", userCredential.user.uid), {
-                    name: name,
-                    email: email,
-                    phone: phone || '',
-                    role: 'user',
-                    createdAt: serverTimestamp()
-                });
-                showNotification('Регистрация успешна!', 'success');
-                return true;
-            } catch (error) {
-                if (error.code === 'auth/email-already-in-use') {
-                    showNotification('Email уже используется', 'error');
-                } else {
-                    showNotification('Ошибка регистрации', 'error');
-                }
-                return false;
-            }
-        }
-
-        async function logout() {
-            await signOut(auth);
-            showNotification('Вы вышли', 'info');
-        }
-
-        // ========== ФУНКЦИИ РЕНДЕРИНГА ==========
-        
         function renderHomeEvents() {
             const grid = document.getElementById('portfolioGrid');
             if (!grid) return;
-            
             const filtered = currentFilter === 'all' ? events : events.filter(e => e.category === currentFilter);
-            
             if (filtered.length === 0) {
                 grid.innerHTML = '<div style="text-align:center;padding:50px;">Нет мероприятий</div>';
                 return;
             }
-            
             let html = '';
             filtered.forEach(event => {
                 const isFull = (event.registeredCount || 0) >= (event.maxParticipants || 100);
@@ -1708,7 +1469,6 @@
                     </div>
                 `;
             });
-            
             if (currentUserRole === 'admin') {
                 html += `
                     <div class="add-event-card" id="homeAddEventBtn">
@@ -1718,9 +1478,7 @@
                     </div>
                 `;
             }
-            
             grid.innerHTML = html;
-            
             document.querySelectorAll('.view-event').forEach(btn => {
                 btn.addEventListener('click', () => showEventDetails(btn.dataset.id));
             });
@@ -1730,14 +1488,15 @@
             document.querySelectorAll('.login-to-register').forEach(btn => {
                 btn.addEventListener('click', () => openAuthModal());
             });
-            const homeAddBtn = document.getElementById('homeAddEventBtn');
-            if (homeAddBtn) homeAddBtn.addEventListener('click', openAddEventModal);
+            if (document.getElementById('homeAddEventBtn')) {
+                document.getElementById('homeAddEventBtn').addEventListener('click', openAddEventModal);
+            }
         }
 
         async function showEventDetails(eventId) {
             const event = events.find(e => e.id === eventId);
             if (!event) return;
-            
+            const modal = document.getElementById('eventModal');
             document.getElementById('modalTitle').textContent = event.title;
             document.getElementById('modalBody').innerHTML = `
                 <div>
@@ -1757,7 +1516,6 @@
                 </div>
             `;
             openModal('eventModal');
-            
             document.getElementById('modalRegisterBtn')?.addEventListener('click', () => {
                 closeModal('eventModal');
                 openRegistrationModal(eventId);
@@ -1779,17 +1537,45 @@
             openModal('registrationModal');
         }
 
+        async function submitRegistration(eventId, formData) {
+            try {
+                const event = events.find(e => e.id === eventId);
+                if (!event) return false;
+                const existing = registrations.find(r => r.eventId === eventId && r.email === formData.email);
+                if (existing) {
+                    showNotification('Вы уже зарегистрированы!', 'error');
+                    return false;
+                }
+                if ((event.registeredCount || 0) >= (event.maxParticipants || 100)) {
+                    showNotification('Все места заняты!', 'error');
+                    return false;
+                }
+                await addDoc(collection(db, "registrations"), {
+                    eventId: eventId, eventTitle: event.title, fullName: formData.fullName,
+                    email: formData.email, phone: formData.phone, birthDate: formData.birthDate,
+                    rank: formData.rank, comment: formData.comment, userId: currentUser?.uid,
+                    status: 'pending', createdAt: serverTimestamp()
+                });
+                await updateDoc(doc(db, "events", eventId), { registeredCount: (event.registeredCount || 0) + 1 });
+                showNotification(`Заявка отправлена!`, 'success');
+                await loadEvents();
+                await loadRegistrations();
+                return true;
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при отправке', 'error');
+                return false;
+            }
+        }
+
         function renderDashboard() {
             if (!currentUser) return;
-            
             const userRegs = registrations.filter(r => r.email === currentUser.email);
             const confirmed = userRegs.filter(r => r.status === 'confirmed');
             const pending = userRegs.filter(r => r.status === 'pending');
-            
             document.getElementById('userActiveEvents').textContent = confirmed.length;
             document.getElementById('userCompletedEvents').textContent = confirmed.length;
             document.getElementById('totalEventsCount').textContent = events.length;
-            
             const upcomingGrid = document.getElementById('upcomingEventsGrid');
             if (upcomingGrid) {
                 if (confirmed.length === 0 && pending.length === 0) {
@@ -1797,17 +1583,7 @@
                 } else {
                     let html = '';
                     confirmed.forEach(reg => {
-                        const event = events.find(e => e.id === reg.eventId);
-                        html += `<div class="project-card">
-                            <div class="project-header">
-                                <h4>${escapeHtml(reg.eventTitle)}</h4>
-                                <span class="project-status status-active">Подтверждено</span>
-                            </div>
-                            ${event ? `<p>${escapeHtml((event.description || '').substring(0, 100))}...</p>` : ''}
-                            ${event?.date ? `<small><i class="fas fa-calendar-alt"></i> ${escapeHtml(event.date)}</small><br>` : ''}
-                            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-                            <small>Вы зарегистрированы</small>
-                        </div>`;
+                        html += `<div class="project-card"><div class="project-header"><h4>${escapeHtml(reg.eventTitle)}</h4><span class="project-status status-active">Подтверждено</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div><small>Вы зарегистрированы</small></div>`;
                     });
                     if (pending.length) {
                         html += `<div class="project-card"><h4>На рассмотрении</h4>${pending.map(p => `<p>📋 ${escapeHtml(p.eventTitle)}</p>`).join('')}</div>`;
@@ -1815,7 +1591,6 @@
                     upcomingGrid.innerHTML = html;
                 }
             }
-            
             const myGrid = document.getElementById('myEventsGrid');
             if (myGrid) {
                 const allRegs = [...confirmed, ...pending];
@@ -1824,19 +1599,13 @@
                 } else {
                     myGrid.innerHTML = allRegs.map(reg => `
                         <div class="project-card">
-                            <div class="project-header">
-                                <h4>${escapeHtml(reg.eventTitle)}</h4>
-                                <span class="project-status ${reg.status === 'confirmed' ? 'status-active' : 'status-pending'}">${reg.status === 'confirmed' ? 'Подтверждено' : 'На рассмотрении'}</span>
-                            </div>
+                            <div class="project-header"><h4>${escapeHtml(reg.eventTitle)}</h4><span class="project-status ${reg.status === 'confirmed' ? 'status-active' : 'status-pending'}">${reg.status === 'confirmed' ? 'Подтверждено' : 'На рассмотрении'}</span></div>
                             <p><strong>Дата:</strong> ${reg.createdAt ? new Date(reg.createdAt.toDate()).toLocaleString() : '—'}</p>
                             <p><strong>ФИО:</strong> ${escapeHtml(reg.fullName)}</p>
-                            <p><strong>Телефон:</strong> ${escapeHtml(reg.phone || '—')}</p>
-                            ${reg.comment ? `<p><strong>Примечание:</strong> ${escapeHtml(reg.comment)}</p>` : ''}
                         </div>
                     `).join('');
                 }
             }
-            
             if (currentUserData) {
                 document.getElementById('profileName').value = currentUserData.name || '';
                 document.getElementById('profileEmail').value = currentUser.email || '';
@@ -1846,18 +1615,13 @@
 
         function renderAdminPanel() {
             if (currentUserRole !== 'admin') return;
-            
             const adminTab = document.querySelector('.admin-tab');
             if (adminTab) adminTab.style.display = 'block';
-            
             const adminGrid = document.getElementById('adminEventsGrid');
-            if (adminGrid) {
+            if (adminGrid && adminGrid) {
                 adminGrid.innerHTML = events.map(event => `
                     <div class="project-card">
-                        <div class="project-header">
-                            <h4>${escapeHtml(event.title)}</h4>
-                            <span class="project-status ${getCategoryClass(event.category)}">${getCategoryText(event.category)}</span>
-                        </div>
+                        <div class="project-header"><h4>${escapeHtml(event.title)}</h4><span class="project-status ${getCategoryClass(event.category)}">${getCategoryText(event.category)}</span></div>
                         <p>${escapeHtml((event.description || '').substring(0, 100))}...</p>
                         <small>👥 ${event.registeredCount || 0}/${event.maxParticipants || 100}</small>
                         <div class="admin-controls">
@@ -1866,15 +1630,13 @@
                         </div>
                     </div>
                 `).join('');
-                
                 document.querySelectorAll('.edit-event-btn').forEach(btn => {
                     btn.addEventListener('click', () => openEditEventModal(btn.dataset.id));
                 });
                 document.querySelectorAll('.delete-event-btn').forEach(btn => {
-                    btn.addEventListener('click', () => deleteEventFromFirebase(btn.dataset.id));
+                    btn.addEventListener('click', () => deleteEvent(btn.dataset.id));
                 });
             }
-            
             const regBody = document.getElementById('registrationsTableBody');
             if (regBody) {
                 regBody.innerHTML = registrations.map(reg => `
@@ -1888,12 +1650,10 @@
                         <td><select class="change-reg-status" data-id="${reg.id}" style="padding:4px;"><option value="pending" ${reg.status === 'pending' ? 'selected' : ''}>На рассмотрении</option><option value="confirmed" ${reg.status === 'confirmed' ? 'selected' : ''}>Подтвердить</option><option value="cancelled" ${reg.status === 'cancelled' ? 'selected' : ''}>Отменить</option></select></td>
                     </tr>
                 `).join('');
-                
                 document.querySelectorAll('.change-reg-status').forEach(select => {
                     select.addEventListener('change', () => updateRegistrationStatus(select.dataset.id, select.value));
                 });
             }
-            
             const contBody = document.getElementById('contactsTableBody');
             if (contBody) {
                 contBody.innerHTML = contacts.map(contact => `
@@ -1906,12 +1666,10 @@
                         <td>${contact.status === 'new' ? `<button class="btn-small mark-read-btn" data-id="${contact.id}" style="background:var(--success-color);color:white;">✓ Отметить</button>` : '—'}</td>
                     </tr>
                 `).join('');
-                
                 document.querySelectorAll('.mark-read-btn').forEach(btn => {
                     btn.addEventListener('click', () => updateContactStatus(btn.dataset.id, 'read'));
                 });
             }
-            
             const usersBody = document.getElementById('usersTableBody');
             if (usersBody) {
                 usersBody.innerHTML = usersList.map(user => `
@@ -1922,38 +1680,128 @@
                         <td><select class="change-role-select" data-id="${user.id}" style="padding:4px;"><option value="user" ${user.role === 'user' ? 'selected' : ''}>Пользователь</option><option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Администратор</option></select></td>
                     </tr>
                 `).join('');
-                
                 document.querySelectorAll('.change-role-select').forEach(select => {
                     select.addEventListener('change', () => updateUserRole(select.dataset.id, select.value));
                 });
             }
         }
 
-        // ========== ФУНКЦИИ ДЛЯ РАБОТЫ С ФОТО ==========
-        
-        function handleImageFile(file) {
-            if (file.size > 5 * 1024 * 1024) {
-                showNotification('Файл слишком большой (макс. 5MB)', 'error');
-                return;
+        async function addEvent(eventData, imageFile) {
+            try {
+                let imageUrl = eventData.imageUrl || '';
+                let imageStoragePath = '';
+                if (imageFile) {
+                    const uploadResult = await uploadImage(imageFile, null);
+                    imageUrl = uploadResult.url;
+                    imageStoragePath = uploadResult.path;
+                }
+                await addDoc(collection(db, "events"), {
+                    ...eventData, imageUrl: imageUrl, imageStoragePath: imageStoragePath,
+                    registeredCount: 0, createdAt: serverTimestamp()
+                });
+                showNotification('Мероприятие добавлено!', 'success');
+                await loadEvents();
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при добавлении', 'error');
             }
-            selectedImageFile = file;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('imagePreview').src = e.target.result;
-                document.getElementById('imagePreviewContainer').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
+        }
+
+        async function updateEvent(eventId, eventData, imageFile, oldImagePath) {
+            try {
+                let imageUrl = eventData.imageUrl || '';
+                let imageStoragePath = eventData.imageStoragePath || '';
+                if (imageFile) {
+                    if (oldImagePath) await deleteImageFromStorage(oldImagePath);
+                    const uploadResult = await uploadImage(imageFile, eventId);
+                    imageUrl = uploadResult.url;
+                    imageStoragePath = uploadResult.path;
+                }
+                await updateDoc(doc(db, "events", eventId), {
+                    ...eventData, imageUrl: imageUrl, imageStoragePath: imageStoragePath
+                });
+                showNotification('Мероприятие обновлено!', 'success');
+                await loadEvents();
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при обновлении', 'error');
+            }
+        }
+
+        async function deleteEvent(eventId) {
+            if (!confirm('Удалить мероприятие?')) return;
+            try {
+                const event = events.find(e => e.id === eventId);
+                if (event?.imageStoragePath) {
+                    await deleteImageFromStorage(event.imageStoragePath);
+                }
+                await deleteDoc(doc(db, "events", eventId));
+                showNotification('Мероприятие удалено', 'success');
+                await loadEvents();
+                await loadRegistrations();
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при удалении', 'error');
+            }
+        }
+
+        async function updateRegistrationStatus(regId, status) {
+            try {
+                await updateDoc(doc(db, "registrations", regId), { status });
+                showNotification('Статус обновлен', 'success');
+                await loadRegistrations();
+                await loadEvents();
+            } catch (error) { console.error("Ошибка:", error); }
+        }
+
+        async function updateContactStatus(contactId, status) {
+            try {
+                await updateDoc(doc(db, "contacts", contactId), { status });
+                await loadContacts();
+            } catch (error) { console.error("Ошибка:", error); }
+        }
+
+        async function updateUserRole(userId, role) {
+            try {
+                await updateDoc(doc(db, "users", userId), { role });
+                showNotification('Роль обновлена', 'success');
+                await loadUsers();
+            } catch (error) { console.error("Ошибка:", error); }
+        }
+
+        async function addContact(data) {
+            try {
+                await addDoc(collection(db, "contacts"), { ...data, status: 'new', createdAt: serverTimestamp() });
+                showNotification('Заявка отправлена!', 'success');
+                await loadContacts();
+            } catch (error) { console.error("Ошибка:", error); }
+        }
+
+        async function uploadImage(file, eventId) {
+            if (!file) return null;
+            const timestamp = Date.now();
+            const fileName = `${timestamp}_${file.name}`;
+            const storageRef = ref(storage, `events/${eventId || timestamp}/${fileName}`);
+            await uploadBytes(storageRef, file);
+            const downloadURL = await getDownloadURL(storageRef);
+            return { url: downloadURL, path: storageRef.fullPath };
         }
         
-        function resetImageUpload() {
-            selectedImageFile = null;
-            document.getElementById('imagePreviewContainer').style.display = 'none';
-            document.getElementById('eventImageFile').value = '';
+        async function deleteImageFromStorage(path) {
+            if (path) {
+                try {
+                    const imageRef = ref(storage, path);
+                    await deleteObject(imageRef);
+                } catch(e) { console.log("Ошибка удаления фото:", e); }
+            }
         }
-        
+
+        // Функции для работы с фото в модальном окне
         function initImageUpload() {
             const uploadArea = document.getElementById('imageUploadArea');
             const fileInput = document.getElementById('eventImageFile');
+            const previewContainer = document.getElementById('imagePreviewContainer');
+            const previewImg = document.getElementById('imagePreview');
             const removeBtn = document.getElementById('removeImageBtn');
             
             if (uploadArea) {
@@ -1973,12 +1821,36 @@
                 });
             }
             if (removeBtn) {
-                removeBtn.addEventListener('click', () => resetImageUpload());
+                removeBtn.addEventListener('click', () => {
+                    selectedImageFile = null;
+                    previewContainer.style.display = 'none';
+                    previewImg.src = '';
+                    fileInput.value = '';
+                });
             }
         }
-
-        // ========== МОДАЛЬНЫЕ ОКНА ==========
         
+        function handleImageFile(file) {
+            if (file.size > 5 * 1024 * 1024) {
+                showNotification('Файл слишком большой (макс. 5MB)', 'error');
+                return;
+            }
+            selectedImageFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function resetImageUpload() {
+            selectedImageFile = null;
+            document.getElementById('imagePreviewContainer').style.display = 'none';
+            document.getElementById('eventImageFile').value = '';
+            document.getElementById('eventImageUrl').value = '';
+        }
+
         function openAddEventModal() {
             resetImageUpload();
             document.getElementById('addEventModalTitle').textContent = 'Добавить мероприятие';
@@ -2002,6 +1874,7 @@
             document.getElementById('eventLocation').value = event.location || '';
             document.getElementById('eventMaxParticipants').value = event.maxParticipants || 100;
             document.getElementById('editEventId').value = eventId;
+            document.getElementById('eventImageUrl').value = event.imageUrl || '';
             if (event.imageUrl && !event.imageUrl.includes('placeholder')) {
                 document.getElementById('imagePreview').src = event.imageUrl;
                 document.getElementById('imagePreviewContainer').style.display = 'block';
@@ -2009,73 +1882,35 @@
             openModal('addEventModal');
         }
 
-        function initAddEventForm() {
-            const form = document.getElementById('addEventForm');
-            if (!form) return;
-            
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                const title = document.getElementById('eventTitle').value;
-                const category = document.getElementById('eventCategory').value;
-                const description = document.getElementById('eventDescription').value;
-                const fullDesc = document.getElementById('eventFullDesc').value;
-                const date = document.getElementById('eventDate').value;
-                const location = document.getElementById('eventLocation').value;
-                const maxParts = parseInt(document.getElementById('eventMaxParticipants').value) || 100;
-                const editId = document.getElementById('editEventId').value;
-                
-                if (!title || !description) {
-                    showNotification('Заполните название и описание', 'error');
-                    return;
-                }
-                
-                const eventData = { 
-                    title, 
-                    category, 
-                    description, 
-                    fullDescription: fullDesc, 
-                    date, 
-                    location, 
-                    maxParticipants: maxParts 
-                };
-                
-                if (editId) {
-                    const oldEvent = events.find(e => e.id === editId);
-                    await updateEventInFirebase(editId, eventData, selectedImageFile, oldEvent?.imageStoragePath);
-                } else {
-                    await addEventToFirebase(eventData, selectedImageFile);
-                }
-                
-                closeModal('addEventModal');
-                form.reset();
-                resetImageUpload();
-            });
+        async function login(email, password) {
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showNotification('Добро пожаловать!', 'success');
+                return true;
+            } catch (error) {
+                showNotification('Неверный email или пароль', 'error');
+                return false;
+            }
         }
 
-        // ========== ИНИЦИАЛИЗАЦИЯ ==========
-        
-        function initFilters() {
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentFilter = btn.dataset.filter;
-                    renderHomeEvents();
+        async function register(name, email, password, phone) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await setDoc(doc(db, "users", userCredential.user.uid), {
+                    name: name, email: email, phone: phone || '', role: 'user', createdAt: serverTimestamp()
                 });
-            });
+                showNotification('Регистрация успешна!', 'success');
+                return true;
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') showNotification('Email уже используется', 'error');
+                else showNotification('Ошибка регистрации', 'error');
+                return false;
+            }
         }
 
-        function initDashboardTabs() {
-            document.querySelectorAll('.dashboard-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    document.querySelectorAll('.dashboard-content').forEach(c => c.classList.add('hidden'));
-                    document.getElementById(tab.dataset.tab + 'Tab').classList.remove('hidden');
-                    if (tab.dataset.tab === 'admin' && currentUserRole === 'admin') renderAdminPanel();
-                });
-            });
+        async function logout() {
+            await signOut(auth);
+            showNotification('Вы вышли', 'info');
         }
 
         function initAuthListener() {
@@ -2126,7 +1961,7 @@
                     <button class="theme-toggle" id="themeToggle"><i class="fas ${document.body.getAttribute('data-theme') === 'dark' ? 'fa-sun' : 'fa-moon'}"></i></button>
                     <button class="login-btn" id="loginBtn">Войти</button>
                 `;
-                document.getElementById('loginBtn')?.addEventListener('click', () => openModal('authModal'));
+                document.getElementById('loginBtn')?.addEventListener('click', openAuthModal);
             }
             const themeToggle = document.getElementById('themeToggle');
             if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
@@ -2155,6 +1990,8 @@
                 });
             });
         }
+
+        function openAuthModal() { openModal('authModal'); }
 
         function initAuthModal() {
             const modal = document.getElementById('authModal');
@@ -2230,6 +2067,55 @@
             document.getElementById('registrationCancelBtn')?.addEventListener('click', () => closeModal('registrationModal'));
         }
 
+        function initAddEventForm() {
+            document.getElementById('addEventForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const title = document.getElementById('eventTitle').value;
+                const category = document.getElementById('eventCategory').value;
+                const description = document.getElementById('eventDescription').value;
+                const fullDesc = document.getElementById('eventFullDesc').value;
+                const date = document.getElementById('eventDate').value;
+                const location = document.getElementById('eventLocation').value;
+                const maxParts = parseInt(document.getElementById('eventMaxParticipants').value) || 100;
+                const editId = document.getElementById('editEventId').value;
+                if (!title || !description) { showNotification('Заполните название и описание', 'error'); return; }
+                const eventData = { title, category, description, fullDescription: fullDesc, date, location, maxParticipants: maxParts };
+                if (editId) {
+                    const oldEvent = events.find(e => e.id === editId);
+                    await updateEvent(editId, eventData, selectedImageFile, oldEvent?.imageStoragePath);
+                } else {
+                    await addEvent(eventData, selectedImageFile);
+                }
+                closeModal('addEventModal');
+                e.target.reset();
+                resetImageUpload();
+            });
+            document.getElementById('addEventCancelBtn')?.addEventListener('click', () => closeModal('addEventModal'));
+        }
+
+        function initFilters() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderHomeEvents();
+                });
+            });
+        }
+
+        function initDashboardTabs() {
+            document.querySelectorAll('.dashboard-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.querySelectorAll('.dashboard-content').forEach(c => c.classList.add('hidden'));
+                    document.getElementById(tab.dataset.tab + 'Tab').classList.remove('hidden');
+                    if (tab.dataset.tab === 'admin' && currentUserRole === 'admin') renderAdminPanel();
+                });
+            });
+        }
+
         function initProfileSave() {
             document.getElementById('saveProfileBtn')?.addEventListener('click', async () => {
                 if (currentUser) {
@@ -2271,7 +2157,7 @@
                 window.scrollTo(0, 0);
                 renderHomeEvents();
             } else if (page === 'dashboard') {
-                if (!currentUser) { openModal('authModal'); return; }
+                if (!currentUser) { openAuthModal(); return; }
                 homePage.classList.remove('active');
                 dashboardPage.classList.add('active');
                 renderDashboard();
@@ -2307,7 +2193,6 @@
                 if (closeBtn) closeBtn.addEventListener('click', () => closeModal(id));
                 if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(id); });
             });
-            document.getElementById('addEventCancelBtn')?.addEventListener('click', () => closeModal('addEventModal'));
         }
 
         function initHeaderScroll() {
@@ -2318,7 +2203,7 @@
             });
         }
 
-        // ЗАПУСК ПРИЛОЖЕНИЯ
+        // Запуск
         initTheme();
         initAuthListener();
         initAuthModal();
@@ -2338,7 +2223,6 @@
         loadEvents();
         
         window.scrollToSection = scrollToSection;
-        window.openAddEventModal = openAddEventModal;
     </script>
 </body>
 </html>
