@@ -1118,7 +1118,7 @@
                             <h3>Заявки с формы связи</h3>
                             <div class="admin-table"><table id="contactsTable"><thead><tr><th>Дата</th><th>Имя</th><th>Email</th><th>Сообщение</th><th>Статус</th><th>Действия</th></tr></thead><tbody id="contactsTableBody"></tbody></table></div>
                             <h3>Пользователи</h3>
-                            <div class="admin-table"><table id="usersTable"><thead><tr><th>Имя</th><th>Email</th><th>Роль</th><th>Действия</th></tr></thead><tbody id="usersTableBody"></tbody></table></div>
+                            <div class="admin-table"><table id="usersTable"><thead><tr><th>Имя</th><th>Email</th><th>Роль</th><th>Действия</th></table></thead><tbody id="usersTableBody"></tbody></table></div>
                         </div>
                     </div>
                 </div>
@@ -1240,8 +1240,7 @@
             "imports": {
                 "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
                 "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
-                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
-                "firebase/storage": "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js"
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
             }
         }
     </script>
@@ -1759,6 +1758,8 @@
             showNotification('Вы вышли', 'info');
         }
 
+        // ========== ИСПРАВЛЕННАЯ ФУНКЦИЯ initAuthListener ==========
+        // Теперь при обновлении страницы вы остаётесь на той же странице
         function initAuthListener() {
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
@@ -1776,7 +1777,24 @@
                         currentUserRole = 'user';
                     }
                     updateHeader();
-                    switchToPage('dashboard');
+                    
+                    // Определяем, на какой странице сейчас пользователь
+                    const currentActivePage = document.querySelector('.page.active');
+                    const isOnDashboard = currentActivePage && currentActivePage.id === 'dashboardPage';
+                    const isOnHome = currentActivePage && currentActivePage.id === 'homePage';
+                    
+                    if (isOnDashboard) {
+                        // Уже на дашборде — обновляем данные
+                        renderDashboard();
+                        if (currentUserRole === 'admin') renderAdminPanel();
+                    } else if (isOnHome) {
+                        // На главной — остаёмся на главной
+                        renderHomeEvents();
+                    } else {
+                        // Ни одна страница не активна (первый заход) — показываем главную
+                        switchToPage('home');
+                    }
+                    
                     await loadEvents();
                     await loadRegistrations();
                     await loadContacts();
@@ -1786,7 +1804,22 @@
                     currentUserRole = null;
                     currentUserData = null;
                     updateHeader();
-                    switchToPage('home');
+                    
+                    // При выходе из системы
+                    const currentActivePage = document.querySelector('.page.active');
+                    const isOnDashboard = currentActivePage && currentActivePage.id === 'dashboardPage';
+                    
+                    if (isOnDashboard) {
+                        // Если были в дашборде — переходим на главную
+                        switchToPage('home');
+                    } else {
+                        // Иначе остаёмся на текущей странице
+                        if (currentActivePage && currentActivePage.id === 'homePage') {
+                            renderHomeEvents();
+                        } else {
+                            switchToPage('home');
+                        }
+                    }
                     await loadEvents();
                 }
             });
