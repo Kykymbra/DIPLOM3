@@ -66,7 +66,6 @@
             padding-top: 0;
         }
         
-        /* Стили для полей ввода */
         input, textarea, select {
             background-color: var(--input-bg) !important;
             color: var(--input-text) !important;
@@ -135,64 +134,6 @@
         .btn-warning { background: linear-gradient(135deg, var(--warning-color), #e0a800); color: #212529; }
         .btn-small { padding: 8px 16px; font-size: 0.9rem; }
         
-        /* Стили для загрузки фото */
-        .image-upload-area {
-            border: 2px dashed var(--gray-color);
-            border-radius: var(--border-radius);
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-bottom: 15px;
-        }
-        
-        .image-upload-area:hover {
-            border-color: var(--primary-color);
-            background: var(--bg-color);
-        }
-        
-        .image-upload-area i {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-        
-        .image-preview-container {
-            margin-top: 15px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .image-preview-container img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: var(--border-radius);
-            object-fit: cover;
-        }
-        
-        .remove-image-btn {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: var(--danger-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-        }
-        
-        .image-preview {
-            display: none;
-            margin-top: 15px;
-        }
-        
-        /* ========== ИСПРАВЛЕННЫЙ HEADER ========== */
         header {
             padding: 1rem 0;
             position: fixed;
@@ -233,18 +174,19 @@
         .logo-icon { 
             width: 45px; 
             height: 45px; 
-            background: transparent;
             border-radius: 10px; 
             display: flex; 
             align-items: center; 
             justify-content: center; 
             overflow: hidden;
         }
+        
         .logo-icon img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
         }
+        
         .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
         .logo-text small { font-size: 0.65rem; font-weight: normal; color: var(--gray-color); }
         
@@ -353,7 +295,6 @@
             cursor: pointer;
         }
         
-        /* ========== ОТСТУП ДЛЯ КОНТЕНТА ========== */
         .page.active {
             display: block;
             padding-top: 85px;
@@ -808,7 +749,28 @@
             margin-bottom: 2rem;
         }
         
-        .footer-logo { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .footer-logo { 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .footer-logo .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
         .footer-about p { color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
         .footer-links h4, .footer-contact h4 { font-size: 1.1rem; margin-bottom: 1rem; color: white; }
         .footer-links ul li { margin-bottom: 0.5rem; }
@@ -844,7 +806,6 @@
             font-size: 0.8rem;
         }
         
-        /* Modal - исправлено: закрытие только по крестику или клику вне */
         .modal {
             display: none;
             position: fixed;
@@ -897,7 +858,6 @@
         
         .modal-body { padding: 1.2rem; }
         
-        /* Кнопка отмены в модальном окне */
         .modal-cancel-btn {
             background: var(--gray-color);
             margin-right: 10px;
@@ -982,7 +942,7 @@
             .logo-text { display: none; }
             .page.active { padding-top: 70px; }
             .notification {
-                bottom: 30px;
+                bottom: 20px;
             }
         }
     </style>
@@ -1169,7 +1129,15 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about"><div class="footer-logo"><div class="logo-icon"><i class="fas fa-futbol"></i></div><div>SportEventHub</div></div><p>Развитие физической культуры и массового спорта.</p></div>
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <img src="https://almenevskij-r45.gosweb.gosuslugi.ru/netcat_files/generated/91/123/760x570/551/8ef1b78ef551488a260b0753c523292c.jpg?crop=0%3A0%3A0%3A0&hash=b08f422ab001943aba0b8c2747b99e71&resize_mode=0&wm_m=0" alt="Логотип">
+                        </div>
+                        <div>SportEventHub</div>
+                    </div>
+                    <p>Развитие физической культуры и массового спорта.</p>
+                </div>
                 <div class="footer-links"><h4>Меню</h4><ul><li><a data-section="home">Главная</a></li><li><a data-section="about">О нас</a></li><li><a data-section="services">Услуги</a></li><li><a data-section="portfolio">Мероприятия</a></li><li><a data-page="dashboard">Личный кабинет</a></li></ul></div>
                 <div class="footer-contact"><h4>Контакты</h4><p><i class="fas fa-map-marker-alt"></i> г. Краснодар, ул. Красная, 123</p><p><i class="fas fa-phone"></i> +7 (861) 123-45-67</p><p><i class="fas fa-envelope"></i> sport@center-fmsr.ru</p></div>
             </div>
@@ -1211,32 +1179,13 @@
                 <button class="modal-close" id="addEventModalClose">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="addEventForm" enctype="multipart/form-data">
+                <form id="addEventForm">
                     <input type="hidden" id="editEventId">
                     <div class="form-group"><label>Название *</label><input type="text" id="eventTitle" class="form-control" required></div>
                     <div class="form-group"><label>Категория</label><select id="eventCategory" class="form-control"><option value="corporate">Соревнования</option><option value="ecommerce">Тренировки</option><option value="webapp">Массовые акции</option></select></div>
                     <div class="form-group"><label>Краткое описание *</label><textarea id="eventDescription" class="form-control" rows="3" required></textarea></div>
                     <div class="form-group"><label>Полное описание</label><textarea id="eventFullDesc" class="form-control" rows="4"></textarea></div>
-                    
-                    <!-- Загрузка фото с компьютера -->
-                    <div class="form-group">
-                        <label>Фото мероприятия</label>
-                        <div class="image-upload-area" id="imageUploadArea">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Нажмите или перетащите фото</p>
-                            <small>Поддерживаются JPG, PNG, GIF (макс. 5MB)</small>
-                            <input type="file" id="eventImageFile" accept="image/*" style="display:none">
-                        </div>
-                        <div class="image-preview" id="imagePreviewContainer">
-                            <div class="image-preview-container">
-                                <img id="imagePreview" src="" alt="Предпросмотр">
-                                <button type="button" class="remove-image-btn" id="removeImageBtn">×</button>
-                            </div>
-                        </div>
-                        <input type="hidden" id="eventImageUrl" value="">
-                        <input type="hidden" id="eventImageStoragePath" value="">
-                    </div>
-                    
+                    <div class="form-group"><label>Фото URL</label><input type="text" id="eventImageUrl" class="form-control" placeholder="https://images.unsplash.com/..."></div>
                     <div class="form-group"><label>Дата проведения</label><input type="text" id="eventDate" class="form-control" placeholder="15.05.2024"></div>
                     <div class="form-group"><label>Место проведения</label><input type="text" id="eventLocation" class="form-control"></div>
                     <div class="form-group"><label>Макс. участников</label><input type="number" id="eventMaxParticipants" class="form-control" value="100"></div>
@@ -1301,7 +1250,6 @@
         import { initializeApp } from "firebase/app";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
         import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp, setDoc } from "firebase/firestore";
-        import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAalMg8ufZZW8Pq5wfXgJEWM5PneY6heBE",
@@ -1315,7 +1263,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const storage = getStorage(app);
 
         let currentUser = null;
         let currentUserRole = null;
@@ -1325,11 +1272,15 @@
         let contacts = [];
         let usersList = [];
         let currentFilter = 'all';
-        
-        // Переменные для загрузки фото
-        let selectedImageFile = null;
-        
-        // ========== ФУНКЦИИ ДЛЯ МОДАЛЬНЫХ ОКОН ==========
+
+        function showNotification(msg, type = 'info') {
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.className = `notification ${type}`;
+            n.style.display = 'block';
+            setTimeout(() => n.style.display = 'none', 3000);
+        }
+
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) modal.classList.remove('active');
@@ -1342,14 +1293,6 @@
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             }
-        }
-        
-        function showNotification(msg, type = 'info') {
-            const n = document.getElementById('notification');
-            n.textContent = msg;
-            n.className = `notification ${type}`;
-            n.style.display = 'block';
-            setTimeout(() => n.style.display = 'none', 3000);
         }
 
         function escapeHtml(str) {
@@ -1599,7 +1542,10 @@
                 } else {
                     myGrid.innerHTML = allRegs.map(reg => `
                         <div class="project-card">
-                            <div class="project-header"><h4>${escapeHtml(reg.eventTitle)}</h4><span class="project-status ${reg.status === 'confirmed' ? 'status-active' : 'status-pending'}">${reg.status === 'confirmed' ? 'Подтверждено' : 'На рассмотрении'}</span></div>
+                            <div class="project-header">
+                                <h4>${escapeHtml(reg.eventTitle)}</h4>
+                                <span class="project-status ${reg.status === 'confirmed' ? 'status-active' : 'status-pending'}">${reg.status === 'confirmed' ? 'Подтверждено' : 'На рассмотрении'}</span>
+                            </div>
                             <p><strong>Дата:</strong> ${reg.createdAt ? new Date(reg.createdAt.toDate()).toLocaleString() : '—'}</p>
                             <p><strong>ФИО:</strong> ${escapeHtml(reg.fullName)}</p>
                         </div>
@@ -1686,18 +1632,12 @@
             }
         }
 
-        async function addEvent(eventData, imageFile) {
+        async function addEvent(eventData) {
             try {
-                let imageUrl = eventData.imageUrl || '';
-                let imageStoragePath = '';
-                if (imageFile) {
-                    const uploadResult = await uploadImage(imageFile, null);
-                    imageUrl = uploadResult.url;
-                    imageStoragePath = uploadResult.path;
-                }
                 await addDoc(collection(db, "events"), {
-                    ...eventData, imageUrl: imageUrl, imageStoragePath: imageStoragePath,
-                    registeredCount: 0, createdAt: serverTimestamp()
+                    ...eventData,
+                    registeredCount: 0,
+                    createdAt: serverTimestamp()
                 });
                 showNotification('Мероприятие добавлено!', 'success');
                 await loadEvents();
@@ -1707,19 +1647,9 @@
             }
         }
 
-        async function updateEvent(eventId, eventData, imageFile, oldImagePath) {
+        async function updateEvent(eventId, eventData) {
             try {
-                let imageUrl = eventData.imageUrl || '';
-                let imageStoragePath = eventData.imageStoragePath || '';
-                if (imageFile) {
-                    if (oldImagePath) await deleteImageFromStorage(oldImagePath);
-                    const uploadResult = await uploadImage(imageFile, eventId);
-                    imageUrl = uploadResult.url;
-                    imageStoragePath = uploadResult.path;
-                }
-                await updateDoc(doc(db, "events", eventId), {
-                    ...eventData, imageUrl: imageUrl, imageStoragePath: imageStoragePath
-                });
+                await updateDoc(doc(db, "events", eventId), eventData);
                 showNotification('Мероприятие обновлено!', 'success');
                 await loadEvents();
             } catch (error) {
@@ -1731,10 +1661,6 @@
         async function deleteEvent(eventId) {
             if (!confirm('Удалить мероприятие?')) return;
             try {
-                const event = events.find(e => e.id === eventId);
-                if (event?.imageStoragePath) {
-                    await deleteImageFromStorage(event.imageStoragePath);
-                }
                 await deleteDoc(doc(db, "events", eventId));
                 showNotification('Мероприятие удалено', 'success');
                 await loadEvents();
@@ -1777,82 +1703,7 @@
             } catch (error) { console.error("Ошибка:", error); }
         }
 
-        async function uploadImage(file, eventId) {
-            if (!file) return null;
-            const timestamp = Date.now();
-            const fileName = `${timestamp}_${file.name}`;
-            const storageRef = ref(storage, `events/${eventId || timestamp}/${fileName}`);
-            await uploadBytes(storageRef, file);
-            const downloadURL = await getDownloadURL(storageRef);
-            return { url: downloadURL, path: storageRef.fullPath };
-        }
-        
-        async function deleteImageFromStorage(path) {
-            if (path) {
-                try {
-                    const imageRef = ref(storage, path);
-                    await deleteObject(imageRef);
-                } catch(e) { console.log("Ошибка удаления фото:", e); }
-            }
-        }
-
-        // Функции для работы с фото в модальном окне
-        function initImageUpload() {
-            const uploadArea = document.getElementById('imageUploadArea');
-            const fileInput = document.getElementById('eventImageFile');
-            const previewContainer = document.getElementById('imagePreviewContainer');
-            const previewImg = document.getElementById('imagePreview');
-            const removeBtn = document.getElementById('removeImageBtn');
-            
-            if (uploadArea) {
-                uploadArea.addEventListener('click', () => fileInput.click());
-                uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.borderColor = 'var(--accent-color)'; });
-                uploadArea.addEventListener('dragleave', () => uploadArea.style.borderColor = 'var(--gray-color)');
-                uploadArea.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    const file = e.dataTransfer.files[0];
-                    if (file && file.type.startsWith('image/')) handleImageFile(file);
-                    uploadArea.style.borderColor = 'var(--gray-color)';
-                });
-            }
-            if (fileInput) {
-                fileInput.addEventListener('change', (e) => {
-                    if (e.target.files[0]) handleImageFile(e.target.files[0]);
-                });
-            }
-            if (removeBtn) {
-                removeBtn.addEventListener('click', () => {
-                    selectedImageFile = null;
-                    previewContainer.style.display = 'none';
-                    previewImg.src = '';
-                    fileInput.value = '';
-                });
-            }
-        }
-        
-        function handleImageFile(file) {
-            if (file.size > 5 * 1024 * 1024) {
-                showNotification('Файл слишком большой (макс. 5MB)', 'error');
-                return;
-            }
-            selectedImageFile = file;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                document.getElementById('imagePreview').src = e.target.result;
-                document.getElementById('imagePreviewContainer').style.display = 'block';
-            };
-            reader.readAsDataURL(file);
-        }
-        
-        function resetImageUpload() {
-            selectedImageFile = null;
-            document.getElementById('imagePreviewContainer').style.display = 'none';
-            document.getElementById('eventImageFile').value = '';
-            document.getElementById('eventImageUrl').value = '';
-        }
-
         function openAddEventModal() {
-            resetImageUpload();
             document.getElementById('addEventModalTitle').textContent = 'Добавить мероприятие';
             document.getElementById('submitEventBtn').innerHTML = '➕ Добавить';
             document.getElementById('addEventForm').reset();
@@ -1863,22 +1714,17 @@
         function openEditEventModal(eventId) {
             const event = events.find(e => e.id === eventId);
             if (!event) return;
-            resetImageUpload();
             document.getElementById('addEventModalTitle').textContent = 'Редактировать мероприятие';
             document.getElementById('submitEventBtn').innerHTML = '✏️ Сохранить';
             document.getElementById('eventTitle').value = event.title || '';
             document.getElementById('eventCategory').value = event.category || 'corporate';
             document.getElementById('eventDescription').value = event.description || '';
             document.getElementById('eventFullDesc').value = event.fullDescription || '';
+            document.getElementById('eventImageUrl').value = event.imageUrl || '';
             document.getElementById('eventDate').value = event.date || '';
             document.getElementById('eventLocation').value = event.location || '';
             document.getElementById('eventMaxParticipants').value = event.maxParticipants || 100;
             document.getElementById('editEventId').value = eventId;
-            document.getElementById('eventImageUrl').value = event.imageUrl || '';
-            if (event.imageUrl && !event.imageUrl.includes('placeholder')) {
-                document.getElementById('imagePreview').src = event.imageUrl;
-                document.getElementById('imagePreviewContainer').style.display = 'block';
-            }
             openModal('addEventModal');
         }
 
@@ -2074,21 +1920,20 @@
                 const category = document.getElementById('eventCategory').value;
                 const description = document.getElementById('eventDescription').value;
                 const fullDesc = document.getElementById('eventFullDesc').value;
+                const imageUrl = document.getElementById('eventImageUrl').value;
                 const date = document.getElementById('eventDate').value;
                 const location = document.getElementById('eventLocation').value;
                 const maxParts = parseInt(document.getElementById('eventMaxParticipants').value) || 100;
                 const editId = document.getElementById('editEventId').value;
                 if (!title || !description) { showNotification('Заполните название и описание', 'error'); return; }
-                const eventData = { title, category, description, fullDescription: fullDesc, date, location, maxParticipants: maxParts };
+                const eventData = { title, category, description, fullDescription: fullDesc, imageUrl, date, location, maxParticipants: maxParts };
                 if (editId) {
-                    const oldEvent = events.find(e => e.id === editId);
-                    await updateEvent(editId, eventData, selectedImageFile, oldEvent?.imageStoragePath);
+                    await updateEvent(editId, eventData);
                 } else {
-                    await addEvent(eventData, selectedImageFile);
+                    await addEvent(eventData);
                 }
                 closeModal('addEventModal');
                 e.target.reset();
-                resetImageUpload();
             });
             document.getElementById('addEventCancelBtn')?.addEventListener('click', () => closeModal('addEventModal'));
         }
@@ -2210,7 +2055,6 @@
         initContactForm();
         initRegistrationForm();
         initAddEventForm();
-        initImageUpload();
         initFilters();
         initDashboardTabs();
         initProfileSave();
