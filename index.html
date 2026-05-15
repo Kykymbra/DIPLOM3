@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportEventHub - Спортивные мероприятия</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a5276;
+            --secondary-color: #2980b9;
+            --accent-color: #e67e22;
+            --light-color: #f8f9fa;
+            --dark-color: #121212;
+            --gray-color: #6c757d;
+            --bg-color: #f0f4f8;
+            --text-color: #1a1a2e;
+            --card-bg: white;
+            --header-bg: rgba(255, 255, 255, 0.95);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.12);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+            --modal-text: #121212;
+            --modal-input-bg: white;
+            --modal-input-border: #ddd;
+            --danger-color: #dc3545;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --input-bg: white;
+            --input-border: #ddd;
+            --input-text: #121212;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #2980b9;
+            --secondary-color: #1a5276;
+            --accent-color: #f39c12;
+            --light-color: #1a1a1a;
+            --dark-color: #f8f9fa;
+            --gray-color: #a0a0a0;
+            --bg-color: #1a1a2e;
+            --text-color: #f0f0f0;
+            --card-bg: #2d2d44;
+            --header-bg: rgba(26, 26, 46, 0.95);
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.4);
+            --modal-text: #f0f0f0;
+            --modal-input-bg: #2d2d44;
+            --modal-input-border: #555;
+            --input-bg: #2d2d44;
+            --input-border: #555;
+            --input-text: #f0f0f0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Стили для полей ввода - исправлено! */
+        input, textarea, select {
+            background-color: var(--input-bg) !important;
+            color: var(--input-text) !important;
+            border: 1px solid var(--input-border) !important;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        input::placeholder, textarea::placeholder {
+            color: var(--gray-color) !important;
+        }
+        
+        .form-control {
+            background-color: var(--input-bg) !important;
+            color: var(--input-text) !important;
+            border: 1px solid var(--input-border) !important;
+        }
+        
+        /* Модальные окна */
+        .modal-content {
+            background: var(--card-bg);
+        }
+        
+        .modal-body input, 
+        .modal-body textarea,
+        .modal-body select {
+            background-color: var(--input-bg) !important;
+            color: var(--input-text) !important;
+            border: 1px solid var(--input-border) !important;
+        }
+        
+        .modal-body label {
+            color: var(--text-color) !important;
+        }
+
+        h1, h2, h3, h4, h5 { font-weight: 700; line-height: 1.3; margin-bottom: 1rem; }
+        h1 { font-size: 3.5rem; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); -webkit-background-clip: text; background-clip: text; color: transparent; margin-bottom: 1.5rem; }
+        h2 { font-size: 2.5rem; color: var(--primary-color); position: relative; display: inline-block; margin-bottom: 2.5rem; }
+        h2:after { content: ''; position: absolute; bottom: -10px; left: 0; width: 70px; height: 4px; background: var(--accent-color); border-radius: 2px; }
+        h3 { font-size: 1.8rem; color: var(--secondary-color); }
+        p { margin-bottom: 1.5rem; color: var(--gray-color); }
+        a { text-decoration: none; color: inherit; transition: var(--transition); cursor: pointer; }
+        ul { list-style: none; }
+        .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            font-size: 1rem;
+        }
+        .btn:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); background: linear-gradient(135deg, var(--secondary-color), var(--primary-color)); }
+        .btn-outline { background: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); }
+        .btn-outline:hover { background: var(--primary-color); color: white; }
+        .btn-danger { background: linear-gradient(135deg, var(--danger-color), #c82333); }
+        .btn-danger:hover { background: linear-gradient(135deg, #c82333, var(--danger-color)); }
+        .btn-success { background: linear-gradient(135deg, var(--success-color), #218838); }
+        .btn-warning { background: linear-gradient(135deg, var(--warning-color), #e0a800); color: #212529; }
+        .btn-small { padding: 8px 16px; font-size: 0.9rem; }
+        
+        header {
+            padding: 1.5rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+        header.scrolled { padding: 1rem 0; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap; }
+        .logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.4rem; color: var(--primary-color); cursor: pointer; flex-shrink: 0; }
+        .logo-icon { width: 45px; height: 45px; background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.4rem; }
+        .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
+        .logo-text small { font-size: 0.7rem; font-weight: normal; color: var(--gray-color); }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; margin-right: auto; }
+        .nav-links a { font-weight: 600; position: relative; padding: 5px 0; color: var(--text-color); cursor: pointer; white-space: nowrap; }
+        .nav-links a:after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--accent-color); transition: var(--transition); }
+        .nav-links a:hover:after { width: 100%; }
+        .user-menu { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .theme-toggle { background: none; border: none; color: var(--text-color); font-size: 1.2rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition); }
+        .theme-toggle:hover { background: rgba(0, 0, 0, 0.1); }
+        [data-theme="dark"] .theme-toggle:hover { background: rgba(255, 255, 255, 0.1); }
+        .login-btn { padding: 8px 20px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border: none; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 0.9rem; }
+        .dashboard-btn { padding: 8px 20px; background: linear-gradient(135deg, #4da1a9, #3e78b2); color: white; border: none; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
+        .dashboard-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+        .logout-header-btn { padding: 8px 20px; background: var(--danger-color); color: white; border: none; border-radius: 30px; font-weight: 600; cursor: pointer; font-size: 0.9rem; white-space: nowrap; }
+        .logout-header-btn:hover { background: #c82333; transform: translateY(-3px); }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 1.5rem; color: var(--primary-color); cursor: pointer; }
+        
+        .hero { padding: 180px 0 100px; background: linear-gradient(135deg, var(--bg-color) 0%, #e8edf5 100%); position: relative; overflow: hidden; }
+        [data-theme="dark"] .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); }
+        .hero:before { content: ''; position: absolute; top: -50%; right: -20%; width: 70%; height: 200%; background: linear-gradient(135deg, rgba(26, 82, 118, 0.05) 0%, rgba(230, 126, 34, 0.05) 100%); transform: rotate(15deg); border-radius: 40px; }
+        .hero-content { display: flex; align-items: center; justify-content: space-between; gap: 50px; position: relative; z-index: 2; flex-wrap: wrap; }
+        .hero-text { flex: 1; min-width: 280px; }
+        .hero-text p { font-size: 1.2rem; margin-bottom: 2.5rem; max-width: 90%; }
+        .hero-btns { display: flex; gap: 20px; margin-top: 2rem; flex-wrap: wrap; }
+        .hero-visual { flex: 1; min-width: 280px; position: relative; }
+        .hero-visual img { max-width: 100%; border-radius: var(--border-radius); box-shadow: var(--shadow-hover); }
+        
+        .services { padding: 100px 0; background-color: var(--card-bg); }
+        .section-title { text-align: center; margin-bottom: 4rem; }
+        .section-title h2:after { left: 50%; transform: translateX(-50%); }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .service-card { background: var(--card-bg); border-radius: var(--border-radius); padding: 2.5rem; box-shadow: var(--shadow); transition: var(--transition); border: 1px solid rgba(0, 0, 0, 0.05); position: relative; overflow: hidden; }
+        .service-card:before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(to bottom, var(--primary-color), var(--accent-color)); transition: var(--transition); }
+        .service-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); }
+        .service-card:hover:before { width: 100%; opacity: 0.05; }
+        .service-icon { width: 70px; height: 70px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; color: white; font-size: 1.8rem; }
+        
+        .about { padding: 100px 0; background-color: var(--bg-color); }
+        .about-content { display: flex; align-items: center; gap: 60px; flex-wrap: wrap; }
+        .about-text { flex: 1; min-width: 280px; }
+        .about-visual { flex: 1; min-width: 280px; position: relative; }
+        .about-visual img { width: 100%; border-radius: var(--border-radius); box-shadow: var(--shadow); }
+        .stats { display: flex; justify-content: space-between; margin-top: 3rem; flex-wrap: wrap; gap: 20px; }
+        .stat-item { text-align: center; flex: 1; min-width: 150px; }
+        .stat-number { font-size: 2.5rem; font-weight: 700; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .stat-label { color: var(--gray-color); font-weight: 500; }
+        
+        .portfolio { padding: 100px 0; background-color: var(--card-bg); }
+        .portfolio-filter { display: flex; justify-content: center; gap: 15px; margin-bottom: 3rem; flex-wrap: wrap; }
+        .filter-btn { padding: 10px 24px; background: var(--card-bg); border: 1px solid var(--gray-color); border-radius: 30px; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--text-color); }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; }
+        .portfolio-item { border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--shadow); transition: var(--transition); position: relative; background: var(--card-bg); }
+        .portfolio-item:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); }
+        .portfolio-img { height: 250px; overflow: hidden; background-color: #f0f0f0; display: flex; align-items: center; justify-content: center; position: relative; }
+        .portfolio-img img { width: 100%; height: 100%; object-fit: cover; transition: var(--transition); }
+        .portfolio-img .event-overlay { position: absolute; width: 100%; height: 100%; background: rgba(26, 82, 118, 0.85); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; padding: 20px; text-align: center; opacity: 0; transition: var(--transition); }
+        .portfolio-item:hover .event-overlay { opacity: 1; }
+        .event-icon { font-size: 3rem; margin-bottom: 15px; }
+        .portfolio-item:hover .portfolio-img img { transform: scale(1.05); }
+        .portfolio-info { padding: 1.5rem; background: var(--card-bg); }
+        .portfolio-info h3 { margin-bottom: 0.5rem; color: var(--text-color); }
+        
+        .add-event-card { background: var(--card-bg); border: 2px dashed var(--primary-color); border-radius: var(--border-radius); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: var(--transition); min-height: 450px; }
+        .add-event-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-hover); border-color: var(--accent-color); background: var(--bg-color); }
+        .add-event-icon { width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; transition: var(--transition); }
+        .add-event-card:hover .add-event-icon { transform: scale(1.1); }
+        .add-event-icon i { font-size: 2.5rem; color: white; }
+        .add-event-card h3 { color: var(--primary-color); margin-bottom: 10px; }
+        .add-event-card p { color: var(--gray-color); text-align: center; }
+        
+        .admin-controls { display: flex; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--gray-color); }
+        .admin-controls button { flex: 1; padding: 8px 12px; font-size: 0.85rem; font-weight: 600; border-radius: 6px; cursor: pointer; border: none; }
+        .edit-event-btn { background: var(--warning-color); color: #212529; }
+        .delete-event-btn { background: var(--danger-color); color: white; }
+        
+        .contact { padding: 100px 0; background: linear-gradient(135deg, var(--primary-color) 0%, #1a365d 100%); color: white; }
+        .contact h2 { color: white; }
+        .contact h2:after { background: var(--accent-color); }
+        .contact-content { display: flex; gap: 60px; align-items: flex-start; flex-wrap: wrap; }
+        .contact-info { flex: 1; min-width: 280px; }
+        .contact-info p { color: rgba(255, 255, 255, 0.8); margin-bottom: 2rem; }
+        .contact-details { margin-top: 2rem; }
+        .contact-item { display: flex; align-items: center; gap: 15px; margin-bottom: 1.5rem; }
+        .contact-icon { width: 50px; height: 50px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+        .contact-form { flex: 1; min-width: 280px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); padding: 2.5rem; border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        
+        .dashboard-section { padding: 120px 0 60px; min-height: calc(100vh - 140px); }
+        .dashboard-container { background: var(--card-bg); border-radius: var(--border-radius); padding: 30px; box-shadow: var(--shadow); }
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--gray-color); flex-wrap: wrap; gap: 15px; }
+        .dashboard-header h2 { color: var(--primary-color); margin: 0; }
+        .dashboard-tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--gray-color); padding-bottom: 15px; flex-wrap: wrap; }
+        .dashboard-tab { padding: 10px 24px; background: none; border: none; font-weight: 600; color: var(--gray-color); cursor: pointer; transition: var(--transition); border-radius: 30px; }
+        .dashboard-tab:hover { color: var(--primary-color); }
+        .dashboard-tab.active { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
+        .dashboard-content { display: block; }
+        .dashboard-content.hidden { display: none; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-card { background: var(--bg-color); border-radius: var(--border-radius); padding: 25px; text-align: center; transition: var(--transition); }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+        .stat-icon { width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); border-radius: 15px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; color: white; font-size: 1.5rem; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 5px; }
+        .stat-label { color: var(--gray-color); }
+        
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+        .project-card { background: var(--bg-color); border-radius: var(--border-radius); padding: 20px; transition: var(--transition); }
+        .project-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+        .project-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .project-status { padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .status-active { background: var(--success-color); color: white; }
+        .status-pending { background: var(--warning-color); color: #212529; }
+        .status-completed { background: var(--primary-color); color: white; }
+        .progress-bar { height: 8px; background: rgba(0, 0, 0, 0.1); border-radius: 4px; overflow: hidden; margin: 15px 0 5px; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); border-radius: 4px; }
+        
+        .settings-group { margin-bottom: 30px; }
+        .settings-group h4 { margin-bottom: 15px; color: var(--primary-color); }
+        .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 15px; background: var(--bg-color); border-radius: var(--border-radius); margin-bottom: 10px; flex-wrap: wrap; gap: 15px; }
+        .setting-info { flex: 1; }
+        .theme-selector { display: flex; gap: 15px; flex-wrap: wrap; }
+        .theme-option { flex: 1; min-width: 100px; padding: 15px; border: 2px solid var(--gray-color); border-radius: var(--border-radius); text-align: center; cursor: pointer; transition: var(--transition); }
+        .theme-option.active { border-color: var(--primary-color); background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
+        .theme-option i { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+        
+        .switch { position: relative; display: inline-block; width: 50px; height: 24px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .switch .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--gray-color); transition: 0.3s; border-radius: 24px; }
+        .switch .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.3s; border-radius: 50%; }
+        .switch input:checked + .slider { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); }
+        .switch input:checked + .slider:before { transform: translateX(26px); }
+        
+        .admin-table { width: 100%; overflow-x: auto; margin-top: 20px; }
+        .admin-table table { width: 100%; border-collapse: collapse; }
+        .admin-table th, .admin-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--gray-color); }
+        .admin-table th { background: var(--primary-color); color: white; }
+        .role-badge, .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; display: inline-block; }
+        .role-admin { background: var(--accent-color); color: white; }
+        .role-user { background: var(--primary-color); color: white; }
+        
+        footer { background-color: var(--dark-color); color: white; padding: 70px 0 30px; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 3rem; }
+        .footer-logo { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .footer-links h4, .footer-contact h4 { font-size: 1.3rem; margin-bottom: 1.5rem; color: white; }
+        .footer-links ul li { margin-bottom: 0.8rem; }
+        .footer-links ul li a { color: rgba(255, 255, 255, 0.7); cursor: pointer; }
+        .footer-links ul li a:hover { color: var(--accent-color); padding-left: 5px; }
+        .footer-contact p { color: rgba(255, 255, 255, 0.7); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        .social-links { display: flex; gap: 15px; margin-top: 1.5rem; }
+        .social-link { width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.08); display: flex; align-items: center; justify-content: center; transition: var(--transition); cursor: pointer; }
+        .social-link:hover { background: var(--accent-color); transform: translateY(-3px); }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.6); font-size: 0.9rem; }
+        
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--card-bg); border-radius: var(--border-radius); max-width: 550px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; animation: modalFadeIn 0.3s ease; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(-50px); } to { opacity: 1; transform: translateY(0); } }
+        .modal-header { padding: 1.5rem; border-bottom: 1px solid var(--gray-color); display: flex; justify-content: space-between; align-items: center; }
+        .modal-header h3 { margin: 0; color: var(--primary-color); }
+        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--gray-color); transition: var(--transition); }
+        .modal-close:hover { color: var(--primary-color); }
+        .modal-body { padding: 1.5rem; }
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .auth-tab { flex: 1; padding: 12px; background: none; border: 1px solid var(--gray-color); border-radius: 8px; font-weight: 600; cursor: pointer; transition: var(--transition); color: var(--text-color); }
+        .auth-tab.active { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; border-color: transparent; }
+        
+        .notification { position: fixed; bottom: 20px; right: 20px; padding: 15px 25px; border-radius: var(--border-radius); background: var(--card-bg); color: var(--text-color); box-shadow: var(--shadow-hover); z-index: 2001; animation: slideIn 0.3s ease; display: none; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        .notification.success { border-left: 4px solid var(--success-color); }
+        .notification.error { border-left: 4px solid var(--danger-color); }
+        .notification.info { border-left: 4px solid var(--accent-color); }
+        
+        .page { display: none; }
+        .page.active { display: block; }
+        .section-scroll { scroll-margin-top: 100px; }
+        
+        @media (max-width: 992px) {
+            h1 { font-size: 2.8rem; }
+            h2 { font-size: 2.2rem; }
+            .hero-content, .about-content, .contact-content { flex-direction: column; }
+            .hero { padding: 150px 0 80px; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--card-bg); flex-direction: column; padding: 2rem; box-shadow: var(--shadow); z-index: 1000; }
+            .nav-links.active { display: flex; }
+            .mobile-menu-btn { display: block; }
+            .logo-text { display: none; }
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <header id="header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-icon"><i class="fas fa-futbol"></i></div>
+                <div class="logo-text">SportEventHub<small>Центр спортивных мероприятий</small></div>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a data-section="home">Главная</a></li>
+                    <li><a data-section="about">О нас</a></li>
+                    <li><a data-section="services">Услуги</a></li>
+                    <li><a data-section="portfolio">Мероприятия</a></li>
+                    <li><a data-section="contact">Контакты</a></li>
+                    <li><a data-page="dashboard">Личный кабинет</a></li>
+                </ul>
+            </nav>
+            <div class="user-menu" id="userMenu"></div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- Главная страница -->
+    <div id="homePage" class="page active">
+        <section class="hero section-scroll" id="home-section">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>Развитие физической культуры и спорта в вашем городе</h1>
+                        <p>Муниципальное казенное учреждение "Центр физической культуры, массовой и спортивной работы" организует и проводит спортивные мероприятия, развивает массовый спорт и здоровый образ жизни.</p>
+                        <div class="hero-btns">
+                            <a class="btn" data-section="contact">Записаться на тренировку</a>
+                            <a class="btn btn-outline" data-section="portfolio">Календарь мероприятий</a>
+                        </div>
+                    </div>
+                    <div class="hero-visual">
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600" alt="Спортивные мероприятия">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="services section-scroll" id="services-section">
+            <div class="container">
+                <div class="section-title"><h2>Наши направления</h2><p>Мы предлагаем широкий спектр услуг</p></div>
+                <div class="services-grid">
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-calendar-alt"></i></div><h3>Организация мероприятий</h3><p>Проведение соревнований, спортивных праздников и физкультурно-массовых мероприятий.</p></div>
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-users"></i></div><h3>Секции и кружки</h3><p>Бесплатные спортивные секции для детей и взрослых по различным видам спорта.</p></div>
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-chalkboard-user"></i></div><h3>Обучение и семинары</h3><p>Повышение квалификации тренеров и учителей физкультуры.</p></div>
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-file-alt"></i></div><h3>Методическая помощь</h3><p>Разработка программ развития спорта, консультации.</p></div>
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-trophy"></i></div><h3>Поддержка спорта</h3><p>Поддержка спортивных клубов и федераций.</p></div>
+                    <div class="service-card"><div class="service-icon"><i class="fas fa-heartbeat"></i></div><h3>ЗОЖ пропаганда</h3><p>Проведение акций по пропаганде здорового образа жизни.</p></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about section-scroll" id="about-section">
+            <div class="container">
+                <div class="section-title"><h2>О нас</h2><p>SportEventHub - ваш надежный партнер</p></div>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Мы создаем условия для занятий спортом каждому</h3>
+                        <p>Наш центр был основан с целью развития физической культуры и спорта, организации досуга населения и пропаганды здорового образа жизни.</p>
+                        <p>За годы работы мы провели сотни спортивных мероприятий, открыли десятки спортивных секций, помогли тысячам людей приобщиться к здоровому образу жизни.</p>
+                        <div class="stats">
+                            <div class="stat-item"><div class="stat-number" id="statEvents">0</div><div class="stat-label">Мероприятий</div></div>
+                            <div class="stat-item"><div class="stat-number">15+</div><div class="stat-label">Секций</div></div>
+                            <div class="stat-item"><div class="stat-number">3000+</div><div class="stat-label">Участников</div></div>
+                            <div class="stat-item"><div class="stat-number">10+</div><div class="stat-label">Лет работы</div></div>
+                        </div>
+                    </div>
+                    <div class="about-visual"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=500" alt="Наша команда"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="portfolio section-scroll" id="portfolio-section">
+            <div class="container">
+                <div class="section-title"><h2>Наши мероприятия</h2><p>Фотографии с проведенных событий</p></div>
+                <div class="portfolio-filter">
+                    <button class="filter-btn active" data-filter="all">Все</button>
+                    <button class="filter-btn" data-filter="corporate">Соревнования</button>
+                    <button class="filter-btn" data-filter="ecommerce">Тренировки</button>
+                    <button class="filter-btn" data-filter="webapp">Массовые акции</button>
+                </div>
+                <div class="portfolio-grid" id="portfolioGrid">
+                    <div style="text-align:center;padding:50px;">Загрузка мероприятий...</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact section-scroll" id="contact-section">
+            <div class="container">
+                <div class="section-title"><h2>Свяжитесь с нами</h2><p>Остались вопросы? Мы всегда рады помочь!</p></div>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Присоединяйтесь к нам</h3>
+                        <p>Хотите участвовать в спортивных мероприятиях? Свяжитесь с нами любым удобным способом.</p>
+                        <div class="contact-details">
+                            <div class="contact-item"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div><h4>Адрес</h4><p>г. Краснодар, ул. Красная, 123</p></div></div>
+                            <div class="contact-item"><div class="contact-icon"><i class="fas fa-phone"></i></div><div><h4>Телефон</h4><p>+7 (861) 123-45-67</p></div></div>
+                            <div class="contact-item"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div><h4>Email</h4><p>sport@center-fmsr.ru</p></div></div>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <form id="contactForm">
+                            <div class="form-group"><label>Ваше имя</label><input type="text" id="contactName" class="form-control" placeholder="Иван Иванов" required></div>
+                            <div class="form-group"><label>Email</label><input type="email" id="contactEmail" class="form-control" placeholder="ivan@example.com" required></div>
+                            <div class="form-group"><label>Телефон</label><input type="tel" id="contactPhone" class="form-control" placeholder="+7 (999) 999-99-99"></div>
+                            <div class="form-group"><label>Сообщение</label><textarea id="contactMessage" class="form-control" placeholder="Расскажите, чем мы можем вам помочь..." required></textarea></div>
+                            <button type="submit" class="btn" style="width:100%;">Отправить заявку</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Личный кабинет -->
+    <div id="dashboardPage" class="page">
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="dashboard-container">
+                    <div class="dashboard-header"><h2>Личный кабинет</h2></div>
+                    <div class="dashboard-tabs">
+                        <button class="dashboard-tab active" data-tab="overview">Обзор</button>
+                        <button class="dashboard-tab" data-tab="myEvents">Мои мероприятия</button>
+                        <button class="dashboard-tab" data-tab="settings">Настройки</button>
+                        <button class="dashboard-tab admin-tab" data-tab="admin" style="display:none;">Админ-панель</button>
+                    </div>
+                    
+                    <div class="dashboard-content" id="overviewTab">
+                        <div class="stats-grid">
+                            <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-alt"></i></div><div class="stat-value" id="userActiveEvents">0</div><div class="stat-label">Активных мероприятий</div></div>
+                            <div class="stat-card"><div class="stat-icon"><i class="fas fa-check-circle"></i></div><div class="stat-value" id="userCompletedEvents">0</div><div class="stat-label">Проведено</div></div>
+                            <div class="stat-card"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-value">85%</div><div class="stat-label">Охват</div></div>
+                            <div class="stat-card"><div class="stat-icon"><i class="fas fa-tasks"></i></div><div class="stat-value" id="totalEventsCount">0</div><div class="stat-label">Всего мероприятий</div></div>
+                        </div>
+                        <h3>Мои записи</h3>
+                        <div class="projects-grid" id="upcomingEventsGrid"></div>
+                    </div>
+                    
+                    <div class="dashboard-content hidden" id="myEventsTab">
+                        <h3>История участия</h3>
+                        <div class="projects-grid" id="myEventsGrid"></div>
+                    </div>
+                    
+                    <div class="dashboard-content hidden" id="settingsTab">
+                        <div class="settings-form">
+                            <div class="settings-group"><h4>Настройки темы</h4><div class="theme-selector"><div class="theme-option active" data-theme="light"><i class="fas fa-sun"></i><span>Светлая</span></div><div class="theme-option" data-theme="dark"><i class="fas fa-moon"></i><span>Темная</span></div></div></div>
+                            <div class="settings-group"><h4>Профиль</h4>
+                                <div class="form-group"><label>Имя</label><input type="text" id="profileName" class="form-control"></div>
+                                <div class="form-group"><label>Email</label><input type="email" id="profileEmail" class="form-control"></div>
+                                <div class="form-group"><label>Телефон</label><input type="text" id="profilePhone" class="form-control"></div>
+                                <button class="btn btn-small" id="saveProfileBtn">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dashboard-content hidden" id="adminTab">
+                        <div class="admin-panel">
+                            <h3>Управление мероприятиями</h3>
+                            <button class="btn btn-small" id="adminAddEventBtn" style="margin-bottom:20px;"><i class="fas fa-plus"></i> Добавить мероприятие</button>
+                            <div class="projects-grid" id="adminEventsGrid"></div>
+                            <h3>Заявки на участие</h3>
+                            <div class="admin-table"><table id="registrationsTable"><thead><tr><th>Дата</th><th>Мероприятие</th><th>ФИО</th><th>Email</th><th>Телефон</th><th>Статус</th><th>Действия</th></tr></thead><tbody id="registrationsTableBody"></tbody></table></div>
+                            <h3>Заявки с формы связи</h3>
+                            <div class="admin-table"><table id="contactsTable"><thead><tr><th>Дата</th><th>Имя</th><th>Email</th><th>Сообщение</th><th>Статус</th><th>Действия</th></tr></thead><tbody id="contactsTableBody"></tbody></table></div>
+                            <h3>Пользователи</h3>
+                            <div class="admin-table"><table id="usersTable"><thead><tr><th>Имя</th><th>Email</th><th>Роль</th><th>Действия</th></tr></thead><tbody id="usersTableBody"></tbody></table></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about"><div class="footer-logo"><div class="logo-icon"><i class="fas fa-futbol"></i></div><div>SportEventHub</div></div><p>Развитие физической культуры и массового спорта.</p></div>
+                <div class="footer-links"><h4>Меню</h4><ul><li><a data-section="home">Главная</a></li><li><a data-section="about">О нас</a></li><li><a data-section="services">Услуги</a></li><li><a data-section="portfolio">Мероприятия</a></li><li><a data-page="dashboard">Личный кабинет</a></li></ul></div>
+                <div class="footer-contact"><h4>Контакты</h4><p><i class="fas fa-map-marker-alt"></i> г. Краснодар, ул. Красная, 123</p><p><i class="fas fa-phone"></i> +7 (861) 123-45-67</p><p><i class="fas fa-envelope"></i> sport@center-fmsr.ru</p></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2024 SportEventHub. Все права защищены.</p></div>
+        </div>
+    </footer>
+
+    <!-- Модальные окна -->
+    <div class="modal" id="eventModal"><div class="modal-content"><div class="modal-header"><h3 id="modalTitle">Детали мероприятия</h3><button class="modal-close" id="modalClose">&times;</button></div><div class="modal-body" id="modalBody"></div></div></div>
+    <div class="modal" id="registrationModal"><div class="modal-content"><div class="modal-header"><h3>Регистрация</h3><button class="modal-close" id="registrationModalClose">&times;</button></div><div class="modal-body"><form id="registrationForm"><input type="hidden" id="regEventId"><div class="form-group"><label>ФИО *</label><input type="text" id="regFullName" class="form-control" required></div><div class="form-group"><label>Email *</label><input type="email" id="regEmail" class="form-control" required></div><div class="form-group"><label>Телефон *</label><input type="tel" id="regPhone" class="form-control" required></div><div class="form-group"><label>Дата рождения</label><input type="date" id="regBirthDate" class="form-control"></div><div class="form-group"><label>Спортивный разряд</label><input type="text" id="regRank" class="form-control" placeholder="КМС, 1 разряд"></div><div class="form-group"><label>Доп. информация</label><textarea id="regComment" class="form-control" rows="3"></textarea></div><button type="submit" class="btn" style="width:100%;">Отправить заявку</button></form></div></div></div>
+    <div class="modal" id="addEventModal"><div class="modal-content"><div class="modal-header"><h3 id="addEventModalTitle">Добавить мероприятие</h3><button class="modal-close" id="addEventModalClose">&times;</button></div><div class="modal-body"><form id="addEventForm"><input type="hidden" id="editEventId"><div class="form-group"><label>Название *</label><input type="text" id="eventTitle" class="form-control" required></div><div class="form-group"><label>Категория</label><select id="eventCategory" class="form-control"><option value="corporate">Соревнования</option><option value="ecommerce">Тренировки</option><option value="webapp">Массовые акции</option></select></div><div class="form-group"><label>Краткое описание *</label><textarea id="eventDescription" class="form-control" rows="3" required></textarea></div><div class="form-group"><label>Полное описание</label><textarea id="eventFullDesc" class="form-control" rows="4"></textarea></div><div class="form-group"><label>Фото URL</label><input type="text" id="eventImageUrl" class="form-control" placeholder="https://..."></div><div class="form-group"><label>Дата</label><input type="text" id="eventDate" class="form-control" placeholder="15.05.2024"></div><div class="form-group"><label>Место</label><input type="text" id="eventLocation" class="form-control"></div><div class="form-group"><label>Макс. участников</label><input type="number" id="eventMaxParticipants" class="form-control" value="100"></div><button type="submit" class="btn" style="width:100%;" id="submitEventBtn">➕ Добавить</button></form></div></div></div>
+    <div class="modal" id="authModal"><div class="modal-content"><div class="modal-header"><h3 id="authModalTitle">Вход</h3><button class="modal-close" id="authModalClose">&times;</button></div><div class="modal-body"><div class="auth-tabs"><button class="auth-tab active" id="loginTab">Вход</button><button class="auth-tab" id="registerTab">Регистрация</button></div><form id="loginForm"><div class="form-group"><label>Email</label><input type="email" id="loginEmail" class="form-control" required></div><div class="form-group"><label>Пароль</label><input type="password" id="loginPassword" class="form-control" required></div><button type="submit" class="btn" style="width:100%;">Войти</button></form><form id="registerForm" style="display:none;"><div class="form-group"><label>Имя</label><input type="text" id="regName" class="form-control" required></div><div class="form-group"><label>Email</label><input type="email" id="regEmailReg" class="form-control" required></div><div class="form-group"><label>Телефон</label><input type="tel" id="regPhoneReg" class="form-control"></div><div class="form-group"><label>Пароль</label><input type="password" id="regPassword" class="form-control" required></div><div class="form-group"><label>Подтвердите пароль</label><input type="password" id="regConfirmPassword" class="form-control" required></div><button type="submit" class="btn" style="width:100%;">Зарегистрироваться</button></form></div></div></div>
+    <div id="notification" class="notification"></div>
+
+    <!-- Firebase SDK -->
+    <script type="importmap">
+        {
+            "imports": {
+                "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+                "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js",
+                "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "firebase/app";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "firebase/auth";
+        import { getFirestore, collection, addDoc, getDocs, getDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp, setDoc } from "firebase/firestore";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAalMg8ufZZW8Pq5wfXgJEWM5PneY6heBE",
+            authDomain: "sporteventhub-74ce3.firebaseapp.com",
+            projectId: "sporteventhub-74ce3",
+            storageBucket: "sporteventhub-74ce3.firebasestorage.app",
+            messagingSenderId: "616612776305",
+            appId: "1:616612776305:web:7716c33be9b5870b43ced0"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+        let currentUserRole = null;
+        let currentUserData = null;
+        let events = [];
+        let registrations = [];
+        let contacts = [];
+        let usersList = [];
+        let currentFilter = 'all';
+
+        function showNotification(msg, type = 'info') {
+            const n = document.getElementById('notification');
+            n.textContent = msg;
+            n.className = `notification ${type}`;
+            n.style.display = 'block';
+            setTimeout(() => n.style.display = 'none', 3000);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        function getCategoryClass(cat) {
+            const classes = { corporate: 'status-active', ecommerce: 'status-pending', webapp: 'status-completed' };
+            return classes[cat] || 'status-active';
+        }
+
+        function getCategoryText(cat) {
+            const texts = { corporate: 'Соревнования', ecommerce: 'Тренировки', webapp: 'Массовые акции' };
+            return texts[cat] || 'Мероприятие';
+        }
+
+        async function loadEvents() {
+            try {
+                const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
+                const snapshot = await getDocs(q);
+                events = [];
+                snapshot.forEach(doc => {
+                    events.push({ id: doc.id, ...doc.data() });
+                });
+                renderHomeEvents();
+                document.getElementById('statEvents').textContent = events.length + '+';
+                if (document.getElementById('dashboardPage').classList.contains('active') && currentUser) {
+                    renderDashboard();
+                }
+                if (currentUserRole === 'admin') renderAdminPanel();
+            } catch (error) {
+                console.error("Ошибка загрузки мероприятий:", error);
+            }
+        }
+
+        async function loadRegistrations() {
+            try {
+                const snapshot = await getDocs(collection(db, "registrations"));
+                registrations = [];
+                snapshot.forEach(doc => {
+                    registrations.push({ id: doc.id, ...doc.data() });
+                });
+                if (currentUserRole === 'admin') renderAdminPanel();
+                if (document.getElementById('dashboardPage').classList.contains('active') && currentUser) renderDashboard();
+            } catch (error) {
+                console.error("Ошибка загрузки заявок:", error);
+            }
+        }
+
+        async function loadContacts() {
+            try {
+                const snapshot = await getDocs(collection(db, "contacts"));
+                contacts = [];
+                snapshot.forEach(doc => {
+                    contacts.push({ id: doc.id, ...doc.data() });
+                });
+                if (currentUserRole === 'admin') renderAdminPanel();
+            } catch (error) {
+                console.error("Ошибка загрузки контактов:", error);
+            }
+        }
+
+        async function loadUsers() {
+            try {
+                const snapshot = await getDocs(collection(db, "users"));
+                usersList = [];
+                snapshot.forEach(doc => {
+                    usersList.push({ id: doc.id, ...doc.data() });
+                });
+                if (currentUserRole === 'admin') renderAdminPanel();
+            } catch (error) {
+                console.error("Ошибка загрузки пользователей:", error);
+            }
+        }
+
+        function renderHomeEvents() {
+            const grid = document.getElementById('portfolioGrid');
+            if (!grid) return;
+            
+            const filtered = currentFilter === 'all' ? events : events.filter(e => e.category === currentFilter);
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div style="text-align:center;padding:50px;">Нет мероприятий</div>';
+                return;
+            }
+            
+            let html = '';
+            filtered.forEach(event => {
+                const isFull = (event.registeredCount || 0) >= (event.maxParticipants || 100);
+                html += `
+                    <div class="portfolio-item">
+                        <div class="portfolio-img">
+                            <div class="event-overlay">
+                                <div class="event-icon"><i class="fas fa-calendar-check"></i></div>
+                                <h4>${escapeHtml(event.title)}</h4>
+                                ${event.date ? `<p><i class="fas fa-calendar-alt"></i> ${escapeHtml(event.date)}</p>` : ''}
+                                ${event.location ? `<p><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location)}</p>` : ''}
+                            </div>
+                            <img src="${event.imageUrl || 'https://via.placeholder.com/400x250?text=Спорт'}" alt="${escapeHtml(event.title)}">
+                        </div>
+                        <div class="portfolio-info">
+                            <div class="project-header">
+                                <h3>${escapeHtml(event.title)}</h3>
+                                <span class="project-status ${getCategoryClass(event.category)}">${getCategoryText(event.category)}</span>
+                            </div>
+                            <p>${escapeHtml((event.description || '').substring(0, 100))}${(event.description || '').length > 100 ? '...' : ''}</p>
+                            ${event.date ? `<small><i class="fas fa-calendar-alt"></i> ${escapeHtml(event.date)}</small><br>` : ''}
+                            <div class="progress-bar"><div class="progress-fill" style="width:${((event.registeredCount || 0) / (event.maxParticipants || 100)) * 100}%"></div></div>
+                            <small>${event.registeredCount || 0}/${event.maxParticipants || 100} участников</small>
+                            <div style="margin-top:15px;display:flex;gap:10px;">
+                                <button class="btn btn-outline view-event" data-id="${event.id}">Подробнее</button>
+                                ${currentUser && !isFull ? `<button class="btn btn-small register-event-btn" data-id="${event.id}" style="background:var(--success-color);">Записаться</button>` : (isFull ? '<button class="btn btn-small" disabled style="background:gray;">Мест нет</button>' : '')}
+                                ${!currentUser ? `<button class="btn btn-small login-to-register" data-id="${event.id}" style="background:var(--success-color);">Войдите</button>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (currentUserRole === 'admin') {
+                html += `
+                    <div class="add-event-card" id="homeAddEventBtn">
+                        <div class="add-event-icon"><i class="fas fa-plus"></i></div>
+                        <h3>Добавить мероприятие</h3>
+                        <p>Нажмите, чтобы добавить новое событие</p>
+                    </div>
+                `;
+            }
+            
+            grid.innerHTML = html;
+            
+            document.querySelectorAll('.view-event').forEach(btn => {
+                btn.addEventListener('click', () => showEventDetails(btn.dataset.id));
+            });
+            document.querySelectorAll('.register-event-btn').forEach(btn => {
+                btn.addEventListener('click', () => openRegistrationModal(btn.dataset.id));
+            });
+            document.querySelectorAll('.login-to-register').forEach(btn => {
+                btn.addEventListener('click', () => openAuthModal());
+            });
+            if (document.getElementById('homeAddEventBtn')) {
+                document.getElementById('homeAddEventBtn').addEventListener('click', openAddEventModal);
+            }
+        }
+
+        async function showEventDetails(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (!event) return;
+            
+            const modal = document.getElementById('eventModal');
+            document.getElementById('modalTitle').textContent = event.title;
+            document.getElementById('modalBody').innerHTML = `
+                <div>
+                    <p><strong>Категория:</strong> <span class="project-status ${getCategoryClass(event.category)}">${getCategoryText(event.category)}</span></p>
+                    ${event.date ? `<p><i class="fas fa-calendar-alt"></i> ${escapeHtml(event.date)}</p>` : ''}
+                    ${event.location ? `<p><i class="fas fa-map-marker-alt"></i> ${escapeHtml(event.location)}</p>` : ''}
+                    <p><i class="fas fa-users"></i> ${event.registeredCount || 0}/${event.maxParticipants || 100} участников</p>
+                </div>
+                ${event.imageUrl ? `<div><img src="${event.imageUrl}" style="width:100%;border-radius:12px;margin:15px 0;"></div>` : ''}
+                <div><h4>Описание</h4><p>${escapeHtml(event.fullDescription || event.description || '')}</p></div>
+                <div style="text-align:center;margin-top:20px;">
+                    ${currentUser ? 
+                        (((event.registeredCount || 0) < (event.maxParticipants || 100)) ? 
+                            `<button class="btn" id="modalRegisterBtn">Записаться</button>` : 
+                            '<p style="color:var(--danger-color);">Мест нет</p>') : 
+                        '<button class="btn" id="modalLoginBtn">Войдите</button>'}
+                </div>
+            `;
+            modal.classList.add('active');
+            
+            document.getElementById('modalRegisterBtn')?.addEventListener('click', () => {
+                modal.classList.remove('active');
+                openRegistrationModal(eventId);
+            });
+            document.getElementById('modalLoginBtn')?.addEventListener('click', () => {
+                modal.classList.remove('active');
+                openAuthModal();
+            });
+        }
+
+        function openRegistrationModal(eventId) {
+            document.getElementById('regEventId').value = eventId;
+            document.getElementById('regFullName').value = currentUserData?.name || '';
+            document.getElementById('regEmail').value = currentUser?.email || '';
+            document.getElementById('regPhone').value = currentUserData?.phone || '';
+            document.getElementById('regBirthDate').value = '';
+            document.getElementById('regRank').value = '';
+            document.getElementById('regComment').value = '';
+            document.getElementById('registrationModal').classList.add('active');
+        }
+
+        async function submitRegistration(eventId, formData) {
+            try {
+                const event = events.find(e => e.id === eventId);
+                if (!event) return false;
+                
+                const existing = registrations.find(r => r.eventId === eventId && r.email === formData.email);
+                if (existing) {
+                    showNotification('Вы уже зарегистрированы!', 'error');
+                    return false;
+                }
+                
+                if ((event.registeredCount || 0) >= (event.maxParticipants || 100)) {
+                    showNotification('Все места заняты!', 'error');
+                    return false;
+                }
+                
+                await addDoc(collection(db, "registrations"), {
+                    eventId: eventId,
+                    eventTitle: event.title,
+                    fullName: formData.fullName,
+                    email: formData.email,
+                    phone: formData.phone,
+                    birthDate: formData.birthDate,
+                    rank: formData.rank,
+                    comment: formData.comment,
+                    userId: currentUser?.uid,
+                    status: 'pending',
+                    createdAt: serverTimestamp()
+                });
+                
+                await updateDoc(doc(db, "events", eventId), {
+                    registeredCount: (event.registeredCount || 0) + 1
+                });
+                
+                showNotification(`Заявка отправлена!`, 'success');
+                await loadEvents();
+                await loadRegistrations();
+                return true;
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при отправке', 'error');
+                return false;
+            }
+        }
+
+        function renderDashboard() {
+            if (!currentUser) return;
+            
+            const userRegs = registrations.filter(r => r.email === currentUser.email);
+            const confirmed = userRegs.filter(r => r.status === 'confirmed');
+            const pending = userRegs.filter(r => r.status === 'pending');
+            
+            document.getElementById('userActiveEvents').textContent = confirmed.length;
+            document.getElementById('userCompletedEvents').textContent = confirmed.length;
+            document.getElementById('totalEventsCount').textContent = events.length;
+            
+            const upcomingGrid = document.getElementById('upcomingEventsGrid');
+            if (upcomingGrid) {
+                if (confirmed.length === 0 && pending.length === 0) {
+                    upcomingGrid.innerHTML = '<div class="project-card"><p>Вы пока не записаны.</p><button class="btn btn-small" onclick="document.querySelector(\'[data-section=\\\'portfolio\\\']\').click()">Мероприятия</button></div>';
+                } else {
+                    let html = '';
+                    confirmed.forEach(reg => {
+                        html += `<div class="project-card"><div class="project-header"><h4>${escapeHtml(reg.eventTitle)}</h4><span class="project-status status-active">Подтверждено</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div><small>Вы зарегистрированы</small></div>`;
+                    });
+                    if (pending.length) {
+                        html += `<div class="project-card"><h4>На рассмотрении</h4>${pending.map(p => `<p>📋 ${escapeHtml(p.eventTitle)}</p>`).join('')}</div>`;
+                    }
+                    upcomingGrid.innerHTML = html;
+                }
+            }
+            
+            const myGrid = document.getElementById('myEventsGrid');
+            if (myGrid) {
+                const allRegs = [...confirmed, ...pending];
+                if (allRegs.length === 0) {
+                    myGrid.innerHTML = '<div class="project-card"><p>История пуста</p></div>';
+                } else {
+                    myGrid.innerHTML = allRegs.map(reg => `
+                        <div class="project-card">
+                            <div class="project-header">
+                                <h4>${escapeHtml(reg.eventTitle)}</h4>
+                                <span class="project-status ${reg.status === 'confirmed' ? 'status-active' : 'status-pending'}">${reg.status === 'confirmed' ? 'Подтверждено' : 'На рассмотрении'}</span>
+                            </div>
+                            <p><strong>Дата:</strong> ${reg.createdAt ? new Date(reg.createdAt.toDate()).toLocaleString() : '—'}</p>
+                            <p><strong>ФИО:</strong> ${escapeHtml(reg.fullName)}</p>
+                        </div>
+                    `).join('');
+                }
+            }
+            
+            if (currentUserData) {
+                document.getElementById('profileName').value = currentUserData.name || '';
+                document.getElementById('profileEmail').value = currentUser.email || '';
+                document.getElementById('profilePhone').value = currentUserData.phone || '';
+            }
+        }
+
+        function renderAdminPanel() {
+            if (currentUserRole !== 'admin') return;
+            
+            const adminTab = document.querySelector('.admin-tab');
+            if (adminTab) adminTab.style.display = 'block';
+            
+            const adminGrid = document.getElementById('adminEventsGrid');
+            if (adminGrid && adminGrid) {
+                adminGrid.innerHTML = events.map(event => `
+                    <div class="project-card">
+                        <div class="project-header">
+                            <h4>${escapeHtml(event.title)}</h4>
+                            <span class="project-status ${getCategoryClass(event.category)}">${getCategoryText(event.category)}</span>
+                        </div>
+                        <p>${escapeHtml((event.description || '').substring(0, 100))}...</p>
+                        <small>👥 ${event.registeredCount || 0}/${event.maxParticipants || 100}</small>
+                        <div class="admin-controls">
+                            <button class="edit-event-btn" data-id="${event.id}">✏️ Редактировать</button>
+                            <button class="delete-event-btn" data-id="${event.id}">🗑️ Удалить</button>
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.querySelectorAll('.edit-event-btn').forEach(btn => {
+                    btn.addEventListener('click', () => openEditEventModal(btn.dataset.id));
+                });
+                document.querySelectorAll('.delete-event-btn').forEach(btn => {
+                    btn.addEventListener('click', () => deleteEvent(btn.dataset.id));
+                });
+            }
+            
+            const regBody = document.getElementById('registrationsTableBody');
+            if (regBody) {
+                regBody.innerHTML = registrations.map(reg => `
+                    <tr>
+                        <td>${reg.createdAt ? new Date(reg.createdAt.toDate()).toLocaleString() : '—'}</td>
+                        <td>${escapeHtml(reg.eventTitle)}</td>
+                        <td>${escapeHtml(reg.fullName)}</td>
+                        <td>${escapeHtml(reg.email)}</td>
+                        <td>${escapeHtml(reg.phone || '—')}</td>
+                        <td><span class="status-badge status-${reg.status}">${reg.status === 'confirmed' ? 'Подтверждена' : reg.status === 'cancelled' ? 'Отменена' : 'На рассмотрении'}</span></td>
+                        <td>
+                            <select class="change-reg-status" data-id="${reg.id}" style="padding:4px;">
+                                <option value="pending" ${reg.status === 'pending' ? 'selected' : ''}>На рассмотрении</option>
+                                <option value="confirmed" ${reg.status === 'confirmed' ? 'selected' : ''}>Подтвердить</option>
+                                <option value="cancelled" ${reg.status === 'cancelled' ? 'selected' : ''}>Отменить</option>
+                            </select>
+                        </td>
+                    </tr>
+                `).join('');
+                
+                document.querySelectorAll('.change-reg-status').forEach(select => {
+                    select.addEventListener('change', () => updateRegistrationStatus(select.dataset.id, select.value));
+                });
+            }
+            
+            const contBody = document.getElementById('contactsTableBody');
+            if (contBody) {
+                contBody.innerHTML = contacts.map(contact => `
+                    <tr>
+                        <td>${contact.createdAt ? new Date(contact.createdAt.toDate()).toLocaleString() : '—'}</td>
+                        <td>${escapeHtml(contact.name)}</td>
+                        <td>${escapeHtml(contact.email)}</td>
+                        <td>${escapeHtml((contact.message || '').substring(0, 50))}...</td>
+                        <td><span class="status-badge status-${contact.status}">${contact.status === 'new' ? 'Новая' : 'Прочитана'}</span></td>
+                        <td>${contact.status === 'new' ? `<button class="btn-small mark-read-btn" data-id="${contact.id}" style="background:var(--success-color);color:white;">✓ Отметить</button>` : '—'}</td>
+                    </tr>
+                `).join('');
+                
+                document.querySelectorAll('.mark-read-btn').forEach(btn => {
+                    btn.addEventListener('click', () => updateContactStatus(btn.dataset.id, 'read'));
+                });
+            }
+            
+            const usersBody = document.getElementById('usersTableBody');
+            if (usersBody) {
+                usersBody.innerHTML = usersList.map(user => `
+                    <tr>
+                        <td>${escapeHtml(user.name || '—')}</td>
+                        <td>${escapeHtml(user.email)}</td>
+                        <td><span class="role-badge role-${user.role}">${user.role === 'admin' ? 'Админ' : 'Пользователь'}</span></td>
+                        <td>
+                            <select class="change-role-select" data-id="${user.id}" style="padding:4px;">
+                                <option value="user" ${user.role === 'user' ? 'selected' : ''}>Пользователь</option>
+                                <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Администратор</option>
+                            </select>
+                        </td>
+                    </tr>
+                `).join('');
+                
+                document.querySelectorAll('.change-role-select').forEach(select => {
+                    select.addEventListener('change', () => updateUserRole(select.dataset.id, select.value));
+                });
+            }
+        }
+
+        async function addEvent(eventData) {
+            try {
+                await addDoc(collection(db, "events"), {
+                    ...eventData,
+                    registeredCount: 0,
+                    createdAt: serverTimestamp()
+                });
+                showNotification('Мероприятие добавлено!', 'success');
+                await loadEvents();
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при добавлении', 'error');
+            }
+        }
+
+        async function updateEvent(eventId, eventData) {
+            try {
+                await updateDoc(doc(db, "events", eventId), eventData);
+                showNotification('Мероприятие обновлено!', 'success');
+                await loadEvents();
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при обновлении', 'error');
+            }
+        }
+
+        async function deleteEvent(eventId) {
+            if (!confirm('Удалить мероприятие?')) return;
+            try {
+                await deleteDoc(doc(db, "events", eventId));
+                showNotification('Мероприятие удалено', 'success');
+                await loadEvents();
+                await loadRegistrations();
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при удалении', 'error');
+            }
+        }
+
+        async function updateRegistrationStatus(regId, status) {
+            try {
+                await updateDoc(doc(db, "registrations", regId), { status });
+                showNotification('Статус обновлен', 'success');
+                await loadRegistrations();
+                await loadEvents();
+            } catch (error) {
+                console.error("Ошибка:", error);
+            }
+        }
+
+        async function updateContactStatus(contactId, status) {
+            try {
+                await updateDoc(doc(db, "contacts", contactId), { status });
+                await loadContacts();
+            } catch (error) {
+                console.error("Ошибка:", error);
+            }
+        }
+
+        async function updateUserRole(userId, role) {
+            try {
+                await updateDoc(doc(db, "users", userId), { role });
+                showNotification('Роль обновлена', 'success');
+                await loadUsers();
+            } catch (error) {
+                console.error("Ошибка:", error);
+            }
+        }
+
+        async function addContact(data) {
+            try {
+                await addDoc(collection(db, "contacts"), {
+                    ...data,
+                    status: 'new',
+                    createdAt: serverTimestamp()
+                });
+                showNotification('Заявка отправлена!', 'success');
+                await loadContacts();
+            } catch (error) {
+                console.error("Ошибка:", error);
+                showNotification('Ошибка при отправке', 'error');
+            }
+        }
+
+        function openAddEventModal() {
+            document.getElementById('addEventModalTitle').textContent = 'Добавить мероприятие';
+            document.getElementById('submitEventBtn').innerHTML = '➕ Добавить';
+            document.getElementById('addEventForm').reset();
+            document.getElementById('editEventId').value = '';
+            document.getElementById('addEventModal').classList.add('active');
+        }
+
+        function openEditEventModal(eventId) {
+            const event = events.find(e => e.id === eventId);
+            if (!event) return;
+            document.getElementById('addEventModalTitle').textContent = 'Редактировать мероприятие';
+            document.getElementById('submitEventBtn').innerHTML = '✏️ Сохранить';
+            document.getElementById('eventTitle').value = event.title || '';
+            document.getElementById('eventCategory').value = event.category || 'corporate';
+            document.getElementById('eventDescription').value = event.description || '';
+            document.getElementById('eventFullDesc').value = event.fullDescription || '';
+            document.getElementById('eventImageUrl').value = event.imageUrl || '';
+            document.getElementById('eventDate').value = event.date || '';
+            document.getElementById('eventLocation').value = event.location || '';
+            document.getElementById('eventMaxParticipants').value = event.maxParticipants || 100;
+            document.getElementById('editEventId').value = eventId;
+            document.getElementById('addEventModal').classList.add('active');
+        }
+
+        async function login(email, password) {
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showNotification('Добро пожаловать!', 'success');
+                return true;
+            } catch (error) {
+                showNotification('Неверный email или пароль', 'error');
+                return false;
+            }
+        }
+
+        async function register(name, email, password, phone) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await setDoc(doc(db, "users", userCredential.user.uid), {
+                    name: name,
+                    email: email,
+                    phone: phone || '',
+                    role: 'user',
+                    createdAt: serverTimestamp()
+                });
+                showNotification('Регистрация успешна!', 'success');
+                return true;
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    showNotification('Email уже используется', 'error');
+                } else {
+                    showNotification('Ошибка регистрации', 'error');
+                }
+                return false;
+            }
+        }
+
+        async function logout() {
+            await signOut(auth);
+            showNotification('Вы вышли', 'info');
+        }
+
+        function initAuthListener() {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    currentUser = user;
+                    try {
+                        const userDoc = await getDoc(doc(db, "users", user.uid));
+                        if (userDoc.exists()) {
+                            currentUserData = userDoc.data();
+                            currentUserRole = currentUserData.role;
+                        } else {
+                            currentUserRole = 'user';
+                            currentUserData = { name: user.email?.split('@')[0], email: user.email };
+                        }
+                    } catch (error) {
+                        console.error("Ошибка:", error);
+                        currentUserRole = 'user';
+                    }
+                    updateHeader();
+                    switchToPage('dashboard');
+                    await loadEvents();
+                    await loadRegistrations();
+                    await loadContacts();
+                    await loadUsers();
+                } else {
+                    currentUser = null;
+                    currentUserRole = null;
+                    currentUserData = null;
+                    updateHeader();
+                    switchToPage('home');
+                    await loadEvents();
+                }
+            });
+        }
+
+        function updateHeader() {
+            const menu = document.getElementById('userMenu');
+            if (currentUser) {
+                menu.innerHTML = `
+                    <button class="theme-toggle" id="themeToggle"><i class="fas ${document.body.getAttribute('data-theme') === 'dark' ? 'fa-sun' : 'fa-moon'}"></i></button>
+                    <button class="dashboard-btn" id="dashboardNavBtn"><i class="fas fa-user"></i> ${escapeHtml(currentUserData?.name || currentUser.email?.split('@')[0] || 'Пользователь')}</button>
+                    <button class="logout-header-btn" id="logoutHeaderBtn"><i class="fas fa-sign-out-alt"></i> Выйти</button>
+                `;
+                document.getElementById('dashboardNavBtn')?.addEventListener('click', () => switchToPage('dashboard'));
+                document.getElementById('logoutHeaderBtn')?.addEventListener('click', logout);
+            } else {
+                menu.innerHTML = `
+                    <button class="theme-toggle" id="themeToggle"><i class="fas ${document.body.getAttribute('data-theme') === 'dark' ? 'fa-sun' : 'fa-moon'}"></i></button>
+                    <button class="login-btn" id="loginBtn">Войти</button>
+                `;
+                document.getElementById('loginBtn')?.addEventListener('click', openAuthModal);
+            }
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+        }
+
+        function toggleTheme() {
+            const newTheme = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (themeIcon) {
+                themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }
+
+        function initTheme() {
+            const saved = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', saved);
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.toggle('active', opt.dataset.theme === saved);
+                opt.addEventListener('click', () => {
+                    document.body.setAttribute('data-theme', opt.dataset.theme);
+                    localStorage.setItem('theme', opt.dataset.theme);
+                    document.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+                    opt.classList.add('active');
+                    const themeIcon = document.querySelector('#themeToggle i');
+                    if (themeIcon) {
+                        themeIcon.className = opt.dataset.theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+                    }
+                });
+            });
+        }
+
+        function openAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+        }
+
+        function initAuthModal() {
+            const modal = document.getElementById('authModal');
+            document.getElementById('authModalClose')?.addEventListener('click', () => modal.classList.remove('active'));
+            modal?.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+            
+            document.getElementById('loginTab')?.addEventListener('click', () => {
+                document.getElementById('loginTab').classList.add('active');
+                document.getElementById('registerTab').classList.remove('active');
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('authModalTitle').textContent = 'Вход';
+            });
+            document.getElementById('registerTab')?.addEventListener('click', () => {
+                document.getElementById('registerTab').classList.add('active');
+                document.getElementById('loginTab').classList.remove('active');
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+                document.getElementById('authModalTitle').textContent = 'Регистрация';
+            });
+            
+            document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                if (await login(email, password)) {
+                    modal.classList.remove('active');
+                    document.getElementById('loginForm').reset();
+                }
+            });
+            
+            document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const name = document.getElementById('regName').value;
+                const email = document.getElementById('regEmailReg').value;
+                const phone = document.getElementById('regPhoneReg').value;
+                const password = document.getElementById('regPassword').value;
+                const confirm = document.getElementById('regConfirmPassword').value;
+                if (password !== confirm) {
+                    showNotification('Пароли не совпадают', 'error');
+                    return;
+                }
+                if (await register(name, email, password, phone)) {
+                    document.getElementById('loginTab').click();
+                    e.target.reset();
+                }
+            });
+        }
+
+        function initContactForm() {
+            document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await addContact({
+                    name: document.getElementById('contactName').value,
+                    email: document.getElementById('contactEmail').value,
+                    phone: document.getElementById('contactPhone').value,
+                    message: document.getElementById('contactMessage').value
+                });
+                e.target.reset();
+            });
+        }
+
+        function initRegistrationForm() {
+            document.getElementById('registrationForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const eventId = document.getElementById('regEventId').value;
+                await submitRegistration(eventId, {
+                    fullName: document.getElementById('regFullName').value,
+                    email: document.getElementById('regEmail').value,
+                    phone: document.getElementById('regPhone').value,
+                    birthDate: document.getElementById('regBirthDate').value,
+                    rank: document.getElementById('regRank').value,
+                    comment: document.getElementById('regComment').value
+                });
+                document.getElementById('registrationModal').classList.remove('active');
+                e.target.reset();
+            });
+        }
+
+        function initAddEventForm() {
+            document.getElementById('addEventForm')?.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const title = document.getElementById('eventTitle').value;
+                const category = document.getElementById('eventCategory').value;
+                const description = document.getElementById('eventDescription').value;
+                const fullDesc = document.getElementById('eventFullDesc').value;
+                const imageUrl = document.getElementById('eventImageUrl').value;
+                const date = document.getElementById('eventDate').value;
+                const location = document.getElementById('eventLocation').value;
+                const maxParts = parseInt(document.getElementById('eventMaxParticipants').value) || 100;
+                const editId = document.getElementById('editEventId').value;
+                
+                if (!title || !description) {
+                    showNotification('Заполните название и описание', 'error');
+                    return;
+                }
+                
+                const eventData = { title, category, description, fullDescription: fullDesc, imageUrl, date, location, maxParticipants: maxParts };
+                
+                if (editId) {
+                    await updateEvent(editId, eventData);
+                } else {
+                    await addEvent(eventData);
+                }
+                document.getElementById('addEventModal').classList.remove('active');
+                e.target.reset();
+            });
+        }
+
+        function initFilters() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderHomeEvents();
+                });
+            });
+        }
+
+        function initDashboardTabs() {
+            document.querySelectorAll('.dashboard-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.dashboard-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.querySelectorAll('.dashboard-content').forEach(c => c.classList.add('hidden'));
+                    document.getElementById(tab.dataset.tab + 'Tab').classList.remove('hidden');
+                    if (tab.dataset.tab === 'admin' && currentUserRole === 'admin') renderAdminPanel();
+                });
+            });
+        }
+
+        function initProfileSave() {
+            document.getElementById('saveProfileBtn')?.addEventListener('click', async () => {
+                if (currentUser) {
+                    try {
+                        await updateDoc(doc(db, "users", currentUser.uid), {
+                            name: document.getElementById('profileName').value,
+                            phone: document.getElementById('profilePhone').value
+                        });
+                        showNotification('Профиль обновлен', 'success');
+                        await loadUsers();
+                        if (currentUserData) currentUserData.name = document.getElementById('profileName').value;
+                        updateHeader();
+                    } catch (error) {
+                        console.error("Ошибка:", error);
+                    }
+                }
+            });
+        }
+
+        function initAdminAddButton() {
+            document.getElementById('adminAddEventBtn')?.addEventListener('click', openAddEventModal);
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId + '-section');
+            if (section) section.scrollIntoView({ behavior: 'smooth' });
+            const homePage = document.getElementById('homePage');
+            const dashboardPage = document.getElementById('dashboardPage');
+            if (!homePage.classList.contains('active')) {
+                homePage.classList.add('active');
+                dashboardPage.classList.remove('active');
+            }
+        }
+
+        function switchToPage(page) {
+            const homePage = document.getElementById('homePage');
+            const dashboardPage = document.getElementById('dashboardPage');
+            if (page === 'home') {
+                homePage.classList.add('active');
+                dashboardPage.classList.remove('active');
+                window.scrollTo(0, 0);
+                renderHomeEvents();
+            } else if (page === 'dashboard') {
+                if (!currentUser) {
+                    openAuthModal();
+                    return;
+                }
+                homePage.classList.remove('active');
+                dashboardPage.classList.add('active');
+                renderDashboard();
+                if (currentUserRole === 'admin') renderAdminPanel();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function initPageNavigation() {
+            document.querySelector('.logo')?.addEventListener('click', () => scrollToSection('home'));
+            document.querySelectorAll('[data-section]').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    scrollToSection(el.dataset.section);
+                });
+            });
+            document.querySelectorAll('[data-page]').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchToPage(el.dataset.page);
+                });
+            });
+        }
+
+        function initMobileMenu() {
+            const btn = document.getElementById('mobileMenuBtn');
+            const links = document.querySelector('.nav-links');
+            btn?.addEventListener('click', () => {
+                links.classList.toggle('active');
+                btn.innerHTML = links.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+            });
+        }
+
+        function initModals() {
+            const closeModal = (id) => {
+                const m = document.getElementById(id);
+                if (m) m.classList.remove('active');
+            };
+            document.getElementById('modalClose')?.addEventListener('click', () => closeModal('eventModal'));
+            document.getElementById('registrationModalClose')?.addEventListener('click', () => closeModal('registrationModal'));
+            document.getElementById('addEventModalClose')?.addEventListener('click', () => closeModal('addEventModal'));
+            ['eventModal', 'registrationModal', 'addEventModal', 'authModal'].forEach(id => {
+                document.getElementById(id)?.addEventListener('click', (e) => {
+                    if (e.target === document.getElementById(id)) closeModal(id);
+                });
+            });
+        }
+
+        function initHeaderScroll() {
+            window.addEventListener('scroll', () => {
+                const header = document.getElementById('header');
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+        }
+
+        // Запуск
+        initTheme();
+        initAuthListener();
+        initAuthModal();
+        initContactForm();
+        initRegistrationForm();
+        initAddEventForm();
+        initFilters();
+        initDashboardTabs();
+        initProfileSave();
+        initAdminAddButton();
+        initPageNavigation();
+        initMobileMenu();
+        initModals();
+        initHeaderScroll();
+        
+        loadEvents();
+        
+        window.scrollToSection = scrollToSection;
+    </script>
+</body>
+</html>
