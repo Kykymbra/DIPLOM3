@@ -135,37 +135,6 @@
         .btn-warning { background: linear-gradient(135deg, var(--warning-color), #e0a800); color: #212529; }
         .btn-small { padding: 8px 16px; font-size: 0.9rem; }
         
-        /* Кнопка отмены */
-        .undo-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: var(--shadow-hover);
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            transition: var(--transition);
-        }
-        
-        .undo-btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .undo-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
         /* Стили для загрузки фото */
         .image-upload-area {
             border: 2px dashed var(--gray-color);
@@ -261,7 +230,22 @@
             flex-shrink: 0;
         }
         
-        .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; }
+        .logo-icon { 
+            width: 45px; 
+            height: 45px; 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden;
+        }
+        
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
         .logo-text { display: flex; flex-direction: column; line-height: 1.2; }
         .logo-text small { font-size: 0.65rem; font-weight: normal; color: var(--gray-color); }
         
@@ -421,7 +405,13 @@
         .hero-text p { font-size: 1.1rem; margin-bottom: 2rem; max-width: 90%; }
         .hero-btns { display: flex; gap: 15px; margin-top: 1.5rem; flex-wrap: wrap; }
         .hero-visual { flex: 1; min-width: 280px; position: relative; }
-        .hero-visual img { max-width: 100%; border-radius: var(--border-radius); box-shadow: var(--shadow-hover); }
+        .hero-visual img { 
+            width: 100%; 
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: var(--border-radius); 
+            box-shadow: var(--shadow-hover); 
+        }
         
         .services { padding: 70px 0; background-color: var(--card-bg); }
         .section-title { text-align: center; margin-bottom: 3rem; }
@@ -819,7 +809,28 @@
             margin-bottom: 2rem;
         }
         
-        .footer-logo { font-size: 1.2rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
+        .footer-logo { 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-logo .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .footer-logo .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
         .footer-about p { color: rgba(255, 255, 255, 0.7); font-size: 0.85rem; }
         .footer-links h4, .footer-contact h4 { font-size: 1.1rem; margin-bottom: 1rem; color: white; }
         .footer-links ul li { margin-bottom: 0.5rem; }
@@ -855,7 +866,7 @@
             font-size: 0.8rem;
         }
         
-        /* Modal - исправлено: закрытие только по крестику или клику вне */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -908,7 +919,6 @@
         
         .modal-body { padding: 1.2rem; }
         
-        /* Кнопка отмены в модальном окне */
         .modal-cancel-btn {
             background: var(--gray-color);
             margin-right: 10px;
@@ -945,7 +955,7 @@
         
         .notification {
             position: fixed;
-            bottom: 100px;
+            bottom: 30px;
             right: 20px;
             padding: 12px 20px;
             border-radius: var(--border-radius);
@@ -992,15 +1002,8 @@
             .mobile-menu-btn { display: block; }
             .logo-text { display: none; }
             .page.active { padding-top: 70px; }
-            .undo-btn {
-                bottom: 20px;
-                right: 20px;
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
-            }
             .notification {
-                bottom: 80px;
+                bottom: 20px;
             }
         }
     </style>
@@ -1009,7 +1012,9 @@
     <header id="header">
         <div class="container header-container">
             <div class="logo">
-                <div class="logo-icon"><i class="fas fa-futbol"></i></div>
+                <div class="logo-icon">
+                    <img src="https://almenevskij-r45.gosweb.gosuslugi.ru/netcat_files/generated/91/123/760x570/551/8ef1b78ef551488a260b0753c523292c.jpg?crop=0%3A0%3A0%3A0&hash=b08f422ab001943aba0b8c2747b99e71&resize_mode=0&wm_m=0" alt="Логотип">
+                </div>
                 <div class="logo-text">SportEventHub<small>Центр спортивных мероприятий</small></div>
             </div>
             <nav>
@@ -1027,11 +1032,6 @@
         </div>
     </header>
 
-    <!-- Кнопка отмены действия -->
-    <button class="undo-btn" id="undoBtn" title="Отменить действие (Ctrl+Z)">
-        <i class="fas fa-undo-alt"></i>
-    </button>
-
     <!-- Главная страница -->
     <div id="homePage" class="page active">
         <section class="hero section-scroll" id="home-section">
@@ -1046,7 +1046,7 @@
                         </div>
                     </div>
                     <div class="hero-visual">
-                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600" alt="Спортивные мероприятия">
+                        <img src="https://almenevskij-r45.gosweb.gosuslugi.ru/netcat_files/generated/91/123/760x570/551/8ef1b78ef551488a260b0753c523292c.jpg?crop=0%3A0%3A0%3A0&hash=b08f422ab001943aba0b8c2747b99e71&resize_mode=0&wm_m=0" alt="Спортивные мероприятия">
                     </div>
                 </div>
             </div>
@@ -1190,7 +1190,15 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-about"><div class="footer-logo"><div class="logo-icon"><i class="fas fa-futbol"></i></div><div>SportEventHub</div></div><p>Развитие физической культуры и массового спорта.</p></div>
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <img src="https://almenevskij-r45.gosweb.gosuslugi.ru/netcat_files/generated/91/123/760x570/551/8ef1b78ef551488a260b0753c523292c.jpg?crop=0%3A0%3A0%3A0&hash=b08f422ab001943aba0b8c2747b99e71&resize_mode=0&wm_m=0" alt="Логотип">
+                        </div>
+                        <div>SportEventHub</div>
+                    </div>
+                    <p>Развитие физической культуры и массового спорта.</p>
+                </div>
                 <div class="footer-links"><h4>Меню</h4><ul><li><a data-section="home">Главная</a></li><li><a data-section="about">О нас</a></li><li><a data-section="services">Услуги</a></li><li><a data-section="portfolio">Мероприятия</a></li><li><a data-page="dashboard">Личный кабинет</a></li></ul></div>
                 <div class="footer-contact"><h4>Контакты</h4><p><i class="fas fa-map-marker-alt"></i> г. Краснодар, ул. Красная, 123</p><p><i class="fas fa-phone"></i> +7 (861) 123-45-67</p><p><i class="fas fa-envelope"></i> sport@center-fmsr.ru</p></div>
             </div>
@@ -1239,7 +1247,6 @@
                     <div class="form-group"><label>Краткое описание *</label><textarea id="eventDescription" class="form-control" rows="3" required></textarea></div>
                     <div class="form-group"><label>Полное описание</label><textarea id="eventFullDesc" class="form-control" rows="4"></textarea></div>
                     
-                    <!-- Загрузка фото с компьютера -->
                     <div class="form-group">
                         <label>Фото мероприятия</label>
                         <div class="image-upload-area" id="imageUploadArea">
@@ -1349,110 +1356,6 @@
         
         // Переменные для загрузки фото
         let selectedImageFile = null;
-        let currentImageUrl = null;
-        
-        // ========== СИСТЕМА ОТМЕНЫ ДЕЙСТВИЙ ==========
-        let historyStack = [];
-        let isUndoing = false;
-        
-        function saveToHistory(actionName, data) {
-            if (isUndoing) return;
-            historyStack.push({
-                timestamp: Date.now(),
-                action: actionName,
-                data: JSON.parse(JSON.stringify(data))
-            });
-            if (historyStack.length > 50) historyStack.shift();
-            updateUndoButton();
-        }
-        
-        function saveEventsState() {
-            saveToHistory('events', { events: events, registrations: registrations });
-        }
-        
-        async function undoLastAction() {
-            if (historyStack.length === 0) {
-                showNotification('Нет действий для отмены', 'info');
-                return;
-            }
-            const lastAction = historyStack.pop();
-            isUndoing = true;
-            try {
-                if (lastAction.action === 'events') {
-                    const oldEvents = lastAction.data.events;
-                    const oldRegistrations = lastAction.data.registrations;
-                    for (const event of events) {
-                        const currentEvent = oldEvents.find(e => e.id === event.id);
-                        if (!currentEvent) {
-                            if (event.imageStoragePath) {
-                                try {
-                                    const oldImageRef = ref(storage, event.imageStoragePath);
-                                    await deleteObject(oldImageRef);
-                                } catch(e) {}
-                            }
-                            await deleteDoc(doc(db, "events", event.id));
-                        }
-                    }
-                    for (const oldEvent of oldEvents) {
-                        const currentEvent = events.find(e => e.id === oldEvent.id);
-                        if (!currentEvent) {
-                            const { id, ...eventData } = oldEvent;
-                            await setDoc(doc(db, "events", id), eventData);
-                        } else if (JSON.stringify(currentEvent) !== JSON.stringify(oldEvent)) {
-                            const { id, ...eventData } = oldEvent;
-                            await updateDoc(doc(db, "events", id), eventData);
-                        }
-                    }
-                    for (const reg of registrations) {
-                        const oldReg = oldRegistrations.find(r => r.id === reg.id);
-                        if (!oldReg) await deleteDoc(doc(db, "registrations", reg.id));
-                    }
-                    for (const oldReg of oldRegistrations) {
-                        const currentReg = registrations.find(r => r.id === oldReg.id);
-                        if (!currentReg) {
-                            const { id, ...regData } = oldReg;
-                            await setDoc(doc(db, "registrations", id), regData);
-                        }
-                    }
-                    showNotification('Действие отменено!', 'success');
-                    await loadEvents();
-                    await loadRegistrations();
-                }
-            } catch (error) {
-                console.error("Ошибка при отмене:", error);
-                showNotification('Ошибка при отмене действия', 'error');
-            }
-            isUndoing = false;
-            updateUndoButton();
-        }
-        
-        function updateUndoButton() {
-            const undoBtn = document.getElementById('undoBtn');
-            if (undoBtn) {
-                if (historyStack.length === 0) undoBtn.classList.add('disabled');
-                else undoBtn.classList.remove('disabled');
-            }
-        }
-        
-        // ========== ЗАГРУЗКА ФОТО В STORAGE ==========
-        async function uploadImage(file, eventId) {
-            if (!file) return null;
-            const timestamp = Date.now();
-            const fileName = `${timestamp}_${file.name}`;
-            const storageRef = ref(storage, `events/${eventId || timestamp}/${fileName}`);
-            await uploadBytes(storageRef, file);
-            const downloadURL = await getDownloadURL(storageRef);
-            return { url: downloadURL, path: storageRef.fullPath };
-        }
-        
-        async function deleteImageFromStorage(path) {
-            if (path) {
-                try {
-                    const imageRef = ref(storage, path);
-                    await deleteObject(imageRef);
-                } catch(e) { console.log("Ошибка удаления фото:", e); }
-            }
-        }
         
         // ========== ФУНКЦИИ ДЛЯ МОДАЛЬНЫХ ОКОН ==========
         function closeModal(modalId) {
@@ -1695,12 +1598,17 @@
 
         function renderDashboard() {
             if (!currentUser) return;
+            
+            // Получаем заявки пользователя по email
             const userRegs = registrations.filter(r => r.email === currentUser.email);
             const confirmed = userRegs.filter(r => r.status === 'confirmed');
             const pending = userRegs.filter(r => r.status === 'pending');
+            
             document.getElementById('userActiveEvents').textContent = confirmed.length;
             document.getElementById('userCompletedEvents').textContent = confirmed.length;
             document.getElementById('totalEventsCount').textContent = events.length;
+            
+            // Отображаем подтвержденные записи
             const upcomingGrid = document.getElementById('upcomingEventsGrid');
             if (upcomingGrid) {
                 if (confirmed.length === 0 && pending.length === 0) {
@@ -1708,7 +1616,17 @@
                 } else {
                     let html = '';
                     confirmed.forEach(reg => {
-                        html += `<div class="project-card"><div class="project-header"><h4>${escapeHtml(reg.eventTitle)}</h4><span class="project-status status-active">Подтверждено</span></div><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div><small>Вы зарегистрированы</small></div>`;
+                        const event = events.find(e => e.id === reg.eventId);
+                        html += `<div class="project-card">
+                            <div class="project-header">
+                                <h4>${escapeHtml(reg.eventTitle)}</h4>
+                                <span class="project-status status-active">Подтверждено</span>
+                            </div>
+                            ${event ? `<p>${escapeHtml((event.description || '').substring(0, 100))}...</p>` : ''}
+                            ${event?.date ? `<small><i class="fas fa-calendar-alt"></i> ${escapeHtml(event.date)}</small><br>` : ''}
+                            <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                            <small>Вы зарегистрированы</small>
+                        </div>`;
                     });
                     if (pending.length) {
                         html += `<div class="project-card"><h4>На рассмотрении</h4>${pending.map(p => `<p>📋 ${escapeHtml(p.eventTitle)}</p>`).join('')}</div>`;
@@ -1716,6 +1634,8 @@
                     upcomingGrid.innerHTML = html;
                 }
             }
+            
+            // История участия
             const myGrid = document.getElementById('myEventsGrid');
             if (myGrid) {
                 const allRegs = [...confirmed, ...pending];
@@ -1724,13 +1644,19 @@
                 } else {
                     myGrid.innerHTML = allRegs.map(reg => `
                         <div class="project-card">
-                            <div class="project-header"><h4>${escapeHtml(reg.eventTitle)}</h4><span class="project-status ${reg.status === 'confirmed' ? 'status-active' : 'status-pending'}">${reg.status === 'confirmed' ? 'Подтверждено' : 'На рассмотрении'}</span></div>
-                            <p><strong>Дата:</strong> ${reg.createdAt ? new Date(reg.createdAt.toDate()).toLocaleString() : '—'}</p>
+                            <div class="project-header">
+                                <h4>${escapeHtml(reg.eventTitle)}</h4>
+                                <span class="project-status ${reg.status === 'confirmed' ? 'status-active' : 'status-pending'}">${reg.status === 'confirmed' ? 'Подтверждено' : 'На рассмотрении'}</span>
+                            </div>
+                            <p><strong>Дата подачи:</strong> ${reg.createdAt ? new Date(reg.createdAt.toDate()).toLocaleString() : '—'}</p>
                             <p><strong>ФИО:</strong> ${escapeHtml(reg.fullName)}</p>
+                            <p><strong>Телефон:</strong> ${escapeHtml(reg.phone || '—')}</p>
+                            ${reg.comment ? `<p><strong>Примечание:</strong> ${escapeHtml(reg.comment)}</p>` : ''}
                         </div>
                     `).join('');
                 }
             }
+            
             if (currentUserData) {
                 document.getElementById('profileName').value = currentUserData.name || '';
                 document.getElementById('profileEmail').value = currentUser.email || '';
@@ -1767,8 +1693,8 @@
                 regBody.innerHTML = registrations.map(reg => `
                     <tr>
                         <td>${reg.createdAt ? new Date(reg.createdAt.toDate()).toLocaleString() : '—'}</td>
-                        <td>${escapeHtml(reg.eventTitle)}</td>
-                        <td>${escapeHtml(reg.fullName)}</td>
+                        <td>${escapeHtml(reg.eventTitle)}
+                                                <td>${escapeHtml(reg.fullName)}</td>
                         <td>${escapeHtml(reg.email)}</td>
                         <td>${escapeHtml(reg.phone || '—')}</td>
                         <td><span class="status-badge status-${reg.status}">${reg.status === 'confirmed' ? 'Подтверждена' : reg.status === 'cancelled' ? 'Отменена' : 'На рассмотрении'}</span></td>
@@ -1816,9 +1742,12 @@
                 let imageUrl = eventData.imageUrl || '';
                 let imageStoragePath = '';
                 if (imageFile) {
-                    const uploadResult = await uploadImage(imageFile, null);
-                    imageUrl = uploadResult.url;
-                    imageStoragePath = uploadResult.path;
+                    const timestamp = Date.now();
+                    const fileName = `${timestamp}_${imageFile.name}`;
+                    const storageRef = ref(storage, `events/${timestamp}/${fileName}`);
+                    await uploadBytes(storageRef, imageFile);
+                    imageUrl = await getDownloadURL(storageRef);
+                    imageStoragePath = storageRef.fullPath;
                 }
                 await addDoc(collection(db, "events"), {
                     ...eventData, imageUrl: imageUrl, imageStoragePath: imageStoragePath,
@@ -1837,10 +1766,18 @@
                 let imageUrl = eventData.imageUrl || '';
                 let imageStoragePath = eventData.imageStoragePath || '';
                 if (imageFile) {
-                    if (oldImagePath) await deleteImageFromStorage(oldImagePath);
-                    const uploadResult = await uploadImage(imageFile, eventId);
-                    imageUrl = uploadResult.url;
-                    imageStoragePath = uploadResult.path;
+                    if (oldImagePath) {
+                        try {
+                            const oldImageRef = ref(storage, oldImagePath);
+                            await deleteObject(oldImageRef);
+                        } catch(e) {}
+                    }
+                    const timestamp = Date.now();
+                    const fileName = `${timestamp}_${imageFile.name}`;
+                    const storageRef = ref(storage, `events/${eventId}/${fileName}`);
+                    await uploadBytes(storageRef, imageFile);
+                    imageUrl = await getDownloadURL(storageRef);
+                    imageStoragePath = storageRef.fullPath;
                 }
                 await updateDoc(doc(db, "events", eventId), {
                     ...eventData, imageUrl: imageUrl, imageStoragePath: imageStoragePath
@@ -1858,7 +1795,10 @@
             try {
                 const event = events.find(e => e.id === eventId);
                 if (event?.imageStoragePath) {
-                    await deleteImageFromStorage(event.imageStoragePath);
+                    try {
+                        const imageRef = ref(storage, event.imageStoragePath);
+                        await deleteObject(imageRef);
+                    } catch(e) {}
                 }
                 await deleteDoc(doc(db, "events", eventId));
                 showNotification('Мероприятие удалено', 'success');
@@ -1980,7 +1920,6 @@
             document.getElementById('eventLocation').value = event.location || '';
             document.getElementById('eventMaxParticipants').value = event.maxParticipants || 100;
             document.getElementById('editEventId').value = eventId;
-            document.getElementById('eventImageUrl').value = event.imageUrl || '';
             if (event.imageUrl && !event.imageUrl.includes('placeholder')) {
                 document.getElementById('imagePreview').src = event.imageUrl;
                 document.getElementById('imagePreviewContainer').style.display = 'block';
@@ -2242,19 +2181,6 @@
         function initAdminAddButton() {
             document.getElementById('adminAddEventBtn')?.addEventListener('click', openAddEventModal);
         }
-        
-        function initUndoButton() {
-            const undoBtn = document.getElementById('undoBtn');
-            if (undoBtn) {
-                undoBtn.addEventListener('click', () => undoLastAction());
-                document.addEventListener('keydown', (e) => {
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
-                        e.preventDefault();
-                        undoLastAction();
-                    }
-                });
-            }
-        }
 
         function scrollToSection(sectionId) {
             const section = document.getElementById(sectionId + '-section');
@@ -2322,7 +2248,7 @@
             });
         }
 
-        // Запуск
+        // Запуск приложения
         initTheme();
         initAuthListener();
         initAuthModal();
@@ -2334,7 +2260,6 @@
         initDashboardTabs();
         initProfileSave();
         initAdminAddButton();
-        initUndoButton();
         initPageNavigation();
         initMobileMenu();
         initModals();
